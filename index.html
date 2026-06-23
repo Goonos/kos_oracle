@@ -4,18 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DBE/DBA Portfolio | 데이터로 증명하는 엔지니어</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome (아이콘) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Highlight.js (코드 강조) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans antialiased selection:bg-blue-500 selection:text-white">
 
-    <nav class="fixed top-0 left-0 w-full bg-gray-900/80 backdrop-blur-md border-b border-gray-800 z-50 px-6 py-4">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <a href="#" class="text-xl font-mono font-bold text-blue-400">&lt;DB.Engineer /&gt;</a>
-            <div class="space-x-6 text-sm font-medium text-gray-400">
+    <!-- 네비게이션 바 (모바일에서 두 줄로 깔끔하게 떨어지도록 수정) -->
+    <nav class="fixed top-0 left-0 w-full bg-gray-900/90 backdrop-blur-md border-b border-gray-800 z-50 px-5 md:px-6 py-3 md:py-4">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
+            <a href="#" class="text-lg md:text-xl font-mono font-bold text-blue-400">&lt;DB.Engineer /&gt;</a>
+            <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 md:space-x-6 text-xs md:text-sm font-medium text-gray-400">
                 <a href="#about" class="hover:text-blue-400 transition">About</a>
                 <a href="#troubleshooting" class="hover:text-blue-400 transition">Troubleshooting</a>
                 <a href="#architecture" class="hover:text-blue-400 transition">Architecture</a>
@@ -24,28 +28,27 @@
         </div>
     </nav>
 
-<!-- Hero & About 섹션 -->
-    <header id="about" class="pt-32 pb-20 px-6 max-w-5xl mx-auto border-b border-gray-800">
-        <div class="grid md:grid-cols-3 gap-12 items-start w-full">
+    <!-- Hero & About 섹션 -->
+    <header id="about" class="pt-28 md:pt-32 pb-16 md:pb-20 px-5 md:px-6 max-w-5xl mx-auto border-b border-gray-800">
+        <div class="grid md:grid-cols-3 gap-8 md:gap-12 items-start w-full">
             
             <!-- 왼쪽: 프로필 사진 및 기본 정보 -->
-            <div class="md:col-span-1 text-center md:text-left space-y-6 w-full">
+            <div class="md:col-span-1 flex flex-col items-center md:items-start text-center md:text-left space-y-5 w-full">
                 <!-- 프로필 이미지 틀 -->
-                <div class="w-48 h-48 bg-gray-800 border-2 border-dashed border-gray-700 rounded-2xl mx-auto md:mx-0 flex flex-col items-center justify-center text-gray-500 relative overflow-hidden group hover:border-blue-500 transition">
-                    <i class="fas fa-user-tie text-4xl mb-2"></i>
-                    <span class="text-xs">추후 사진 삽입 영역</span>
-                    <!-- 실제 사진 삽입 시 주석 해제 -->
+                <div class="w-36 h-36 md:w-48 md:h-48 shrink-0 bg-gray-800 border-2 border-dashed border-gray-700 rounded-2xl flex flex-col items-center justify-center text-gray-500 relative overflow-hidden group hover:border-blue-500 transition">
+                    <i class="fas fa-user-tie text-3xl md:text-4xl mb-2"></i>
+                    <span class="text-[10px] md:text-xs">추후 사진 삽입</span>
                     <!-- <img src="images/profile.jpg" alt="권오승" class="w-full h-full object-cover"> -->
                 </div>
                 
                 <!-- 인적 사항 -->
-                <div class="space-y-3 font-mono text-sm">
-                    <h2 class="text-2xl font-extrabold text-white tracking-wide">권오승</h2>
-                    <p class="text-blue-400 font-medium">[ 1998.03.31 ]</p>
-                    <p class="text-gray-400 hover:text-blue-300 transition">
-                        <i class="fas fa-envelope mr-2"></i>ohseung31@naver.com
+                <div class="space-y-2.5 font-mono text-sm w-full">
+                    <h2 class="text-xl md:text-2xl font-extrabold text-white tracking-wide">권오승</h2>
+                    <p class="text-blue-400 font-medium text-xs md:text-sm">[ 1998.03.31 ]</p>
+                    <p class="text-gray-400 hover:text-blue-300 transition text-xs md:text-sm break-all">
+                        <i class="fas fa-envelope mr-1.5"></i>ohseung31@naver.com
                     </p>
-                    <div class="pt-4 flex gap-3 justify-center md:justify-start">
+                    <div class="pt-3 flex justify-center md:justify-start">
                         <a href="https://github.com/Determination-github" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium inline-flex items-center gap-2 border border-gray-700 transition">
                             <i class="fab fa-github"></i> GitHub
                         </a>
@@ -55,51 +58,46 @@
 
             <!-- 오른쪽: 학력, 경력, 자격증 -->
             <div class="md:col-span-2 space-y-8 w-full">
-                <div>
-                    <span class="text-blue-400 font-mono text-xs block mb-1">[아이티윌 오라클 부트캠프]</span>
-                    <h1 class="text-3xl font-extrabold tracking-tight text-white mb-4">
-                        실무 아키텍처 이해도를 갖춘 <br><span class="text-blue-500">DB 데이터 엔지니어</span>
+                <div class="text-center md:text-left">
+                    <span class="text-blue-400 font-mono text-xs block mb-1.5 md:mb-1">[아이티윌 오라클 부트캠프]</span>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-4 leading-snug">
+                        실무 아키텍처 이해도를 갖춘 <br class="hidden md:block"><span class="text-blue-500">DB 데이터 엔지니어</span>
                     </h1>
-                    <p class="text-gray-400 text-sm leading-relaxed">
+                    <p class="text-gray-400 text-xs md:text-sm leading-relaxed word-break-keep-all">
                         산업 실무 현장에서의 탄탄한 협업 및 하드웨어/통신 시스템 경험을 바탕으로, 현재는 데이터베이스 내부 동작 원리와 쿼리 성능 최적화에 몰두하고 있습니다. 인프라 전체를 거시적으로 바라보며 안정적인 가용성을 확보하는 엔지니어가 되겠습니다.
                     </p>
                 </div>
 
-                <!-- 이력 정보 그리드 -->
-                <div class="grid sm:grid-cols-2 gap-8 border-t border-gray-800/80 pt-6 w-full">
-                    
+                <div class="grid sm:grid-cols-2 gap-8 md:gap-8 border-t border-gray-800/80 pt-6 w-full">
                     <!-- 학력 및 경력 -->
-                    <div class="space-y-6">
-                        <!-- 학력 -->
+                    <div class="space-y-8 md:space-y-6">
                         <div>
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 md:mb-3 flex items-center justify-center md:justify-start gap-2">
                                 <i class="fas fa-graduation-cap text-blue-500 text-xs"></i> Education
                             </h3>
                             <ul class="space-y-4 text-xs border-l border-gray-800 pl-3 ml-1.5">
                                 <li class="relative">
                                     <strong class="text-gray-200 block text-sm">서울과학기술대학교</strong>
-                                    <span class="text-gray-400">정보통신융합공학과 입학</span>
+                                    <span class="text-gray-400 block mt-0.5">정보통신융합공학과 입학</span>
                                     <span class="text-gray-500 block font-mono mt-0.5">2024.03 ~ 재학 중</span>
                                 </li>
                                 <li class="relative">
                                     <strong class="text-gray-200 block text-sm">재능대학교</strong>
-                                    <span class="text-gray-400">전자과 졸업</span>
+                                    <span class="text-gray-400 block mt-0.5">전자과 졸업</span>
                                     <span class="text-blue-400 block font-mono mt-0.5">학점: 3.76 / 4.5 (만점)</span>
                                     <span class="text-gray-500 block font-mono mt-0.5">2018.02</span>
                                 </li>
                                 <li class="relative">
-                                    <strong class="text-gray-400 block">재능고등학교 졸업</strong>
+                                    <strong class="text-gray-400 block text-sm">재능고등학교 졸업</strong>
                                     <span class="text-gray-500 block font-mono mt-0.5">2016.02</span>
                                 </li>
                             </ul>
                         </div>
-
-                        <!-- 경력 -->
                         <div>
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 md:mb-3 flex items-center justify-center md:justify-start gap-2">
                                 <i class="fas fa-briefcase text-blue-500 text-xs"></i> Experience
                             </h3>
-                            <ul class="space-y-3 text-xs border-l border-gray-800 pl-3 ml-1.5">
+                            <ul class="space-y-4 md:space-y-3 text-xs border-l border-gray-800 pl-3 ml-1.5">
                                 <li>
                                     <strong class="text-gray-200 block text-sm">(주)누비콤</strong>
                                     <span class="text-gray-500 block font-mono mt-0.5">2022.09 ~ 2026.06</span>
@@ -119,10 +117,10 @@
                     <!-- 자격증 -->
                     <div class="space-y-6">
                         <div>
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 md:mb-3 flex items-center justify-center md:justify-start gap-2">
                                 <i class="fas fa-certificate text-blue-500 text-xs"></i> Certificates
                             </h3>
-                            <ul class="space-y-2 text-xs text-gray-400">
+                            <ul class="space-y-2.5 md:space-y-2 text-xs text-gray-400">
                                 <li class="bg-gray-800/30 px-3 py-2.5 rounded border border-gray-800/50 flex justify-between items-center">
                                     <span>SQLD (SQL 개발자)</span>
                                 </li>
@@ -138,38 +136,43 @@
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </header>
 
-    <section id="troubleshooting" class="py-20 px-6 max-w-5xl mx-auto border-t border-gray-800">
-        <h2 class="text-2xl font-bold mb-2 text-white"><i class="fas fa-tools text-blue-500 mr-2"></i> Troubleshooting Experience</h2>
-        <p class="text-gray-400 text-sm mb-10">직면했던 성능 병목 현상을 엔지니어링 관점에서 해결한 기록입니다.</p>
-        <div id="trouble-container" class="space-y-12">
-            </div>
-    </section>
-
-    <section id="architecture" class="py-20 px-6 bg-gray-950 border-t border-gray-800">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-2xl font-bold mb-2 text-white"><i class="fas fa-network-wired text-blue-500 mr-2"></i> Architecture Blueprint</h2>
-            <p class="text-gray-400 text-sm mb-10">Replication, Clustering, 백업 및 복구 시나리오 검증 결과 백서입니다.</p>
-            <div id="arch-container" class="grid md:grid-cols-2 gap-6">
-                </div>
+    <!-- 1. 트러블슈팅 섹션 -->
+    <section id="troubleshooting" class="py-16 md:py-20 px-5 md:px-6 max-w-5xl mx-auto border-b border-gray-800">
+        <h2 class="text-xl md:text-2xl font-bold mb-2 text-white text-center md:text-left"><i class="fas fa-tools text-blue-500 mr-2"></i> Troubleshooting Experience</h2>
+        <p class="text-gray-400 text-xs md:text-sm mb-8 md:mb-10 text-center md:text-left">직면했던 성능 병목 현상을 엔지니어링 관점에서 해결한 기록입니다.</p>
+        <div id="trouble-container" class="space-y-8 md:space-y-12">
+            <!-- script.js에서 동적으로 채워집니다 -->
         </div>
     </section>
 
-    <section id="blog" class="py-20 px-6 max-w-5xl mx-auto border-t border-gray-800">
-        <h2 class="text-2xl font-bold mb-2 text-white"><i class="fas fa-book text-blue-500 mr-2"></i> Daily Study Log</h2>
-        <p class="text-gray-400 text-sm mb-10">매일 다른 블로그에 꾸준히 기록하고 학습한 흔적들의 아카이브입니다.</p>
-        <div id="blog-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- 2. 아키텍처 백서 섹션 -->
+    <section id="architecture" class="py-16 md:py-20 px-5 md:px-6 bg-gray-950 border-b border-gray-800">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-xl md:text-2xl font-bold mb-2 text-white text-center md:text-left"><i class="fas fa-network-wired text-blue-500 mr-2"></i> Architecture Blueprint</h2>
+            <p class="text-gray-400 text-xs md:text-sm mb-8 md:mb-10 text-center md:text-left">Replication, Clustering, 백업 및 복구 시나리오 검증 결과 백서입니다.</p>
+            <div id="arch-container" class="grid sm:grid-cols-2 gap-5 md:gap-6">
+                <!-- script.js에서 동적으로 채워집니다 -->
             </div>
+        </div>
     </section>
 
-    <footer class="py-8 text-center text-xs text-gray-600 border-t border-gray-800">
-        <p>© 2026 홍길동. Powered by Pure HTML/CSS/JS & GitHub Pages.</p>
+    <!-- 3. 데일리 블로그 로그 섹션 -->
+    <section id="blog" class="py-16 md:py-20 px-5 md:px-6 max-w-5xl mx-auto">
+        <h2 class="text-xl md:text-2xl font-bold mb-2 text-white text-center md:text-left"><i class="fas fa-book text-blue-500 mr-2"></i> Daily Study Log</h2>
+        <p class="text-gray-400 text-xs md:text-sm mb-8 md:mb-10 text-center md:text-left">매일 다른 블로그에 꾸준히 기록하고 학습한 흔적들의 아카이브입니다.</p>
+        <div id="blog-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- script.js에서 동적으로 채워집니다 -->
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="py-8 text-center text-[10px] md:text-xs text-gray-600 border-t border-gray-800">
+        <p>© 2026 권오승. Powered by Pure HTML/CSS/JS & GitHub Pages.</p>
     </footer>
 
     <script src="data.js"></script>
