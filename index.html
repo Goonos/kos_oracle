@@ -24,20 +24,140 @@
         </div>
     </nav>
 
-    <header id="about" class="pt-32 pb-20 px-6 max-w-4xl mx-auto text-center md:text-left md:flex items-center justify-between gap-8">
-        <div class="flex-1">
-            <span class="text-blue-400 font-mono text-sm block mb-2">[아이티윌 오라클 부트캠프]</span>
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-white">
-                인덱스 하나로 쿼리 타임아웃을 해결하는 <br class="hidden md:inline">DB 엔지니어, <span class="text-blue-500">홍길동</span>입니다.
-            </h1>
-            <p class="text-gray-400 text-lg mb-6 leading-relaxed">
-                단순히 쿼리를 짜는 것을 넘어, Execution Plan을 분석하고 아키텍처적 트레이드오프를 고민하며 데이터 가용성을 극대화하는 것에 희열을 느낍니다.
-            </p>
-            <div class="flex gap-4 justify-center md:justify-start">
-                <a href="https://github.com/Determination-github" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium inline-flex items-center gap-2 border border-gray-700 transition">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
+<!-- Hero & About 섹션 -->
+    <header id="about" class="pt-32 pb-20 px-6 max-w-5xl mx-auto border-b border-gray-800">
+        <div class="grid md:grid-cols-3 gap-12 items-start">
+            
+            <!-- 왼쪽: 프로필 사진 및 기본 정보 -->
+            <div class="md:col-span-1 text-center md:text-left space-y-6">
+                <!-- 프로필 이미지 틀 -->
+                <div class="w-48 h-48 bg-gray-800 border-2 border-dashed border-gray-700 rounded-2xl mx-auto md:mx-0 flex flex-col items-center justify-center text-gray-500 relative overflow-hidden group hover:border-blue-500 transition">
+                    <i class="fas fa-user-tie text-4xl mb-2"></i>
+                    <span class="text-xs">추후 사진 삽입 영역</span>
+                    <!-- 실제 사진을 넣으실 때는 아래 주석을 풀고 사용하세요 -->
+                    <!-- <img src="images/profile.jpg" alt="권오승" class="w-full h-full object-cover"> -->
+                </div>
+                
+                <!-- 인적 사항 -->
+                <div class="space-y-3 font-mono text-sm">
+                    <h2 class="text-2xl font-extrabold text-white tracking-wide">권오승</h2>
+                    <p class="text-blue-400 font-medium">[ 1998.03.31 ]</p>
+                    <p class="text-gray-400 hover:text-blue-300 transition">
+                        <i class="fas fa-envelope mr-2"></i>ohseung31@naver.com
+                    </p>
+                    <div class="pt-4 flex gap-3 justify-center md:justify-start">
+                        <a href="https://github.com/Determination-github" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium inline-flex items-center gap-2 border border-gray-700 transition">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
             </div>
+
+            <!-- 오른쪽: 학력, 경력, 자격증 (2단 구조) -->
+            <div class="md:col-span-2 space-y-8">
+                <div>
+                    <span class="text-blue-400 font-mono text-xs block mb-1">[아이티윌 오라클 부트캠프]</span>
+                    <h1 class="text-3xl font-extrabold tracking-tight text-white mb-4">
+                        실무 아키텍처 이해도를 갖춘 <br><span class="text-blue-500">DB 데이터 엔지니어</span>
+                    </h1>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        산업 실무 현장에서의 탄탄한 협업 및 하드웨어/통신 시스템 경험을 바탕으로, 현재는 데이터베이스 내부 동작 원리와 쿼리 성능 최적화에 몰두하고 있습니다. 인프라 전체를 거시적으로 바라보며 안정적인 가용성을 확보하는 엔지니어가 되겠습니다.
+                    </p>
+                </div>
+
+                <!-- 이력 정보 그리드 -->
+                <div class="grid sm:grid-cols-2 gap-8 border-t border-gray-800/80 pt-6">
+                    
+                    <!-- 학력 및 경력 (타임라인 스타일) -->
+                    <div class="space-y-6">
+                        <!-- 학력 -->
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                                <i class="fas fa-graduation-cap text-blue-500 text-xs"></i> Education
+                            </h3>
+                            <ul class="space-y-3 text-xs border-l border-gray-800 pl-3 ml-1.5">
+                                <li class="relative">
+                                    <strong class="text-gray-200 block">서울과학기술대학교</strong>
+                                    <span class="text-gray-400">정보통신융합공학과 입학</span>
+                                    <span class="text-gray-500 block font-mono mt-0.5">2024.03 ~ 재학 중</span>
+                                </li>
+                                <li class="relative">
+                                    <strong class="text-gray-200 block">재능고등학교</strong>
+                                    <span class="text-gray-400">전자과 졸업</span>
+                                    <span class="text-gray-500 block font-mono mt-0.5">2018.02</span>
+                                </li>
+                                <li class="relative">
+                                    <strong class="text-gray-300 block text-gray-500">재능고등학교 졸업</strong>
+                                    <span class="text-gray-500 block font-mono mt-0.5">2016.02</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 경력 -->
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                                <i class="fas fa-briefcase text-blue-500 text-xs"></i> Experience
+                            </h3>
+                            <ul class="space-y-3 text-xs border-l border-gray-800 pl-3 ml-1.5">
+                                <li>
+                                    <strong class="text-gray-200 block">(주)누비콤</strong>
+                                    <span class="text-gray-500 block font-mono mt-0.5">2022.09 ~ 2026.06</span>
+                                </li>
+                                <li>
+                                    <strong class="text-gray-200 block">(주)엔티렉스</strong>
+                                    <span class="text-gray-500 block font-mono mt-0.5">2020.11 ~ 2022.08</span>
+                                </li>
+                                <li>
+                                    <strong class="text-gray-200 block">(주)엔티렉스</strong>
+                                    <span class="text-gray-500 block font-mono mt-0.5">2016.01 ~ 2018.04</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 자격증 및 보유 기술 -->
+                    <div class="space-y-6">
+                        <!-- 자격증 -->
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                                <i class="fas fa-certificate text-blue-500 text-xs"></i> Certificates
+                            </h3>
+                            <ul class="space-y-2 text-xs text-gray-300">
+                                <li class="flex justify-between items-center bg-gray-800/40 px-3 py-2 rounded border border-gray-800">
+                                    <span>SQLD (SQL 개발자)</span>
+                                    <span class="text-[10px] text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded uppercase font-mono font-bold tracking-wider">Active</span>
+                                </li>
+                                <li class="flex justify-between items-center bg-gray-800/40 px-3 py-2 rounded border border-gray-800">
+                                    <span>정보처리기사</span>
+                                    <span class="text-[10px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded uppercase font-mono font-bold tracking-wider">필기 합격</span>
+                                </li>
+                                <li class="flex justify-between items-center bg-gray-800/20 px-3 py-1.5 rounded text-gray-400">
+                                    <span>정보기기운용기능사</span>
+                                </li>
+                                <li class="flex justify-between items-center bg-gray-800/20 px-3 py-1.5 rounded text-gray-400">
+                                    <span>정보통신기기기능사</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 추가 추천 항목 레이아웃 (공백 방지 및 역량 어필) -->
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                                <i class="fas fa-cubes text-blue-500 text-xs"></i> Core Tech Stack
+                            </h3>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="text-xs bg-gray-800 text-blue-400 font-mono px-2.5 py-1 rounded border border-gray-700">Oracle DB</span>
+                                <span class="text-xs bg-gray-800 text-gray-300 font-mono px-2.5 py-1 rounded border border-gray-700">SQL / PL-SQL</span>
+                                <span class="text-xs bg-gray-800 text-gray-300 font-mono px-2.5 py-1 rounded border border-gray-700">Linux / Shell Script</span>
+                                <span class="text-xs bg-gray-800 text-gray-300 font-mono px-2.5 py-1 rounded border border-gray-700">HTML5 / CSS3 / JavaScript</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </header>
 
