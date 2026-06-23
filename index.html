@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBE/DBA Portfolio | 데이터로 증명하는 엔지니어</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased selection:bg-blue-500 selection:text-white">
+
+    <nav class="fixed top-0 left-0 w-full bg-gray-900/80 backdrop-blur-md border-b border-gray-800 z-50 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-xl font-mono font-bold text-blue-400">&lt;DB.Engineer /&gt;</a>
+            <div class="space-x-6 text-sm font-medium text-gray-400">
+                <a href="#about" class="hover:text-blue-400 transition">About</a>
+                <a href="#troubleshooting" class="hover:text-blue-400 transition">Troubleshooting</a>
+                <a href="#architecture" class="hover:text-blue-400 transition">Architecture</a>
+                <a href="#blog" class="hover:text-blue-400 transition">Daily Log</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="about" class="pt-32 pb-20 px-6 max-w-4xl mx-auto text-center md:text-left md:flex items-center justify-between gap-8">
+        <div class="flex-1">
+            <span class="text-blue-400 font-mono text-sm block mb-2">[아이티윌 오라클 부트캠프]</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-white">
+                인덱스 하나로 쿼리 타임아웃을 해결하는 <br class="hidden md:inline">DB 엔지니어, <span class="text-blue-500">홍길동</span>입니다.
+            </h1>
+            <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                단순히 쿼리를 짜는 것을 넘어, Execution Plan을 분석하고 아키텍처적 트레이드오프를 고민하며 데이터 가용성을 극대화하는 것에 희열을 느낍니다.
+            </p>
+            <div class="flex gap-4 justify-center md:justify-start">
+                <a href="https://github.com/Determination-github" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium inline-flex items-center gap-2 border border-gray-700 transition">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="troubleshooting" class="py-20 px-6 max-w-5xl mx-auto border-t border-gray-800">
+        <h2 class="text-2xl font-bold mb-2 text-white"><i class="fas fa-tools text-blue-500 mr-2"></i> Troubleshooting Experience</h2>
+        <p class="text-gray-400 text-sm mb-10">직면했던 성능 병목 현상을 엔지니어링 관점에서 해결한 기록입니다.</p>
+        <div id="trouble-container" class="space-y-12">
+            </div>
+    </section>
+
+    <section id="architecture" class="py-20 px-6 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-2xl font-bold mb-2 text-white"><i class="fas fa-network-wired text-blue-500 mr-2"></i> Architecture Blueprint</h2>
+            <p class="text-gray-400 text-sm mb-10">Replication, Clustering, 백업 및 복구 시나리오 검증 결과 백서입니다.</p>
+            <div id="arch-container" class="grid md:grid-cols-2 gap-6">
+                </div>
+        </div>
+    </section>
+
+    <section id="blog" class="py-20 px-6 max-w-5xl mx-auto border-t border-gray-800">
+        <h2 class="text-2xl font-bold mb-2 text-white"><i class="fas fa-book text-blue-500 mr-2"></i> Daily Study Log</h2>
+        <p class="text-gray-400 text-sm mb-10">매일 다른 블로그에 꾸준히 기록하고 학습한 흔적들의 아카이브입니다.</p>
+        <div id="blog-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            </div>
+    </section>
+
+    <footer class="py-8 text-center text-xs text-gray-600 border-t border-gray-800">
+        <p>© 2026 홍길동. Powered by Pure HTML/CSS/JS & GitHub Pages.</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
