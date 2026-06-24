@@ -104,3 +104,23 @@ document.addEventListener("DOMContentLoaded", () => {
                         updateSlider();
                     }
                 });
+            }
+        });
+
+        nextButtons.forEach(btn => {
+            if (btn) {
+                btn.addEventListener("click", () => {
+                    if (currentPage < totalPages - 1) {
+                        currentPage++;
+                        updateSlider();
+                    }
+                });
+            }
+        });
+
+        updateSlider();
+    }
+
+    // 코드 하이라이팅 초기화
+    hljs.highlightAll();
+});
