@@ -42,23 +42,23 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     });
 
-    // 3. 블로그 로그 렌더링 및 3x3 면 분할 슬라이더 알고리즘 (⭐️ 대용량 최적화 반영)
+    // 3. 블로그 로그 렌더링 및 2x3 면 분할 슬라이더 알고리즘 (⭐️ 2x3 최적화 반영)
     const blogContainer = document.getElementById("blog-container");
     
     if (DATA.blogLogs && DATA.blogLogs.length > 0) {
-        const itemsPerPage = 9; // 한 페이지에 노출될 최대 카드 개수 (3x3 = 9)
+        const itemsPerPage = 6; // 변경 완료: 한 페이지에 노출될 최대 카드 개수 (2열 x 3행 = 6)
         const totalItems = DATA.blogLogs.length;
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         let currentPage = 0;
 
-        // 전체 데이터를 9개씩 쪼개어 가로 슬라이드용 '페이지 격자판' 생성
+        // 전체 데이터를 6개씩 쪼개어 가로 슬라이드용 '페이지 격자판' 생성
         for (let i = 0; i < totalPages; i++) {
             const startIdx = i * itemsPerPage;
             const endIdx = Math.min(startIdx + itemsPerPage, totalItems);
             const chunk = DATA.blogLogs.slice(startIdx, endIdx);
 
-            // 개별 페이지 생성 (PC에서는 grid-cols-3 구조로 배치되어 최대 3x3 격자를 이룸)
-            let pageHtml = `<div class="w-full shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-1 box-border">`;
+            // 변경 완료: lg:grid-cols-2 구조로 배치하여 최대 2x3 격자를 이룸
+            let pageHtml = `<div class="w-full shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 px-1 box-border">`;
 
             chunk.forEach(item => {
                 const tagsHtml = item.tags.map(tag => `<span class="text-[10px] text-blue-400 bg-blue-500/5 px-2 py-0.5 rounded font-mono break-keep">#${tag}</span>`).join(" ");
