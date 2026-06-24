@@ -145,7 +145,7 @@ const DATA = {
             tags: ["Python"],
             link: "https://blog.naver.com/10soong"
         },
-    ]
+    ],
     album: [
         { id: "img-01", src: "image/1.jpg", title: "여름공연", comment: "25년 8월 홍대에서 일렉기타 포지션으로 공연" },
         { id: "img-02", src: "image/2.jpg", title: "겨울공연", comment: "26년 2월 홍대에서 일렉기타 포지션으로 공연" },
