@@ -22,6 +22,26 @@ const DATA = {
             ]
         }
     ],
+            {
+            id: "ts-02", // 고유 ID 추가
+            title: "text",
+            context: "text",
+            result: "text",
+            code: "text",
+            
+            // ⭐️ 디테일 버튼을 누르면 노출될 상세 정보들
+            details: [
+                {
+                    subtitle: "🔍 text",
+                    content: "text"
+                },
+                {
+                    subtitle: "🛠️ text",
+                    content: "text"
+                }
+            ]
+        }
+    ],
     // 2. 아키텍처 및 백서 데이터
     architecture: [
         {
