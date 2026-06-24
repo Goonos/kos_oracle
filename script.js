@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. 트러블슈팅 슬라이더 로직
+    // ==========================================
+    // 1. 트러블슈팅 섹션 (기존 완벽 복구 ⭐️)
+    // ==========================================
     const troubleContainer = document.getElementById("trouble-container");
     const troublePrev = document.getElementById("trouble-prev");
     const troubleNext = document.getElementById("trouble-next");
@@ -9,8 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const troubleIndicatorMobile = document.getElementById("trouble-indicator-mobile");
 
     let troubleIndex = 0;
-    const itemsPerTroublePagePC = 1;
-    const itemsPerTroublePageMobile = 1;
 
     function renderTroubleshooting() {
         if (!troubleContainer || !DATA.troubleshooting) return;
@@ -31,7 +31,31 @@ document.addEventListener("DOMContentLoaded", () => {
         `).join('');
     }
 
-    // 2. 아키텍처 백서 렌더링 로직 (독립 분리 ⭐️)
+    function updateTroubleSlider() {
+        if (!troubleContainer) return;
+        const total = DATA.troubleshooting.length;
+        
+        // 인덱스 범위 방어
+        if (troubleIndex < 0) troubleIndex = 0;
+        if (troubleIndex >= total) troubleIndex = total - 1;
+
+        troubleContainer.style.transform = `translateX(-${troubleIndex * 100}%)`;
+        
+        const text = `Page ${troubleIndex + 1} / ${total}`;
+        if (troubleIndicator) troubleIndicator.textContent = text;
+        if (troubleIndicatorMobile) troubleIndicatorMobile.textContent = text;
+    }
+
+    // 트러블슈팅 버튼 이벤트
+    if (troublePrev) troublePrev.addEventListener("click", () => { if (troubleIndex > 0) { troubleIndex--; updateTroubleSlider(); } });
+    if (troubleNext) troubleNext.addEventListener("click", () => { if (troubleIndex < DATA.troubleshooting.length - 1) { troubleIndex++; updateTroubleSlider(); } });
+    if (troublePrevMobile) troublePrevMobile.addEventListener("click", () => { if (troubleIndex > 0) { troubleIndex--; updateTroubleSlider(); } });
+    if (troubleNextMobile) troubleNextMobile.addEventListener("click", () => { if (troubleIndex < DATA.troubleshooting.length - 1) { troubleIndex++; updateTroubleSlider(); } });
+
+
+    // ==========================================
+    // 2. 아키텍처 백서 섹션 (독립 분리 버그 방어 ⭐️)
+    // ==========================================
     const archContainer = document.getElementById("arch-container");
     function renderArchitecture() {
         if (!archContainer || !DATA.architecture) return;
@@ -53,7 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
         `).join('');
     }
 
-    // 3. 블로그 로그 슬라이더 로직
+
+    // ==========================================
+    // 3. 데일리 스터디 로그 섹션 (기존 완벽 복구 ⭐️)
+    // ==========================================
     const blogContainer = document.getElementById("blog-container");
     const blogPrev = document.getElementById("blog-prev");
     const blogNext = document.getElementById("blog-next");
@@ -63,8 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const blogIndicatorMobile = document.getElementById("blog-indicator-mobile");
 
     let blogIndex = 0;
-    const itemsPerBlogPagePC = 6;
-    const itemsPerBlogPageMobile = 3;
+    const itemsPerBlogPC = 6;
+    const itemsPerBlogMobile = 3;
 
     function renderBlogLogs() {
         if (!blogContainer || !DATA.blogLogs) return;
@@ -74,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="space-y-1.5">
                         <div class="flex justify-between items-center text-[10px] font-mono text-gray-500">
                             <span>${item.date}</span>
-                            <span class="text-blue-400/80"><i class="fab fa-python mr-0.5"></i> ${item.tags[0]}</span>
+                            <span class="text-blue-400/80"><i class="fab fa-python mr-0.5"></i> ${item.tags[0] || 'Python'}</span>
                         </div>
                         <h3 class="text-xs md:text-sm font-bold text-gray-200 line-clamp-1 group-hover:text-white">${item.title}</h3>
                         <p class="text-gray-400 text-[11px] md:text-xs leading-relaxed line-clamp-2">${item.summary}</p>
@@ -84,61 +111,36 @@ document.addEventListener("DOMContentLoaded", () => {
         `).join('');
     }
 
-    // 슬라이더 업데이트 함수
-    function updateSlider(type) {
+    function updateBlogSlider() {
+        if (!blogContainer) return;
         const isMobile = window.innerWidth < 768;
-        if (type === 'trouble') {
-            const total = DATA.troubleshooting.length;
-            const perPage = isMobile ? itemsPerTroublePageMobile : itemsPerTroublePagePC;
-            const maxIdx = Math.max(0, total - perPage);
-            if (troubleIndex > maxIdx) troubleIndex = maxIdx;
-            
-            if (troubleContainer) {
-                troubleContainer.style.transform = `translateX(-${troubleIndex * 100}%)`;
-            }
-            const curPage = troubleIndex + 1;
-            const totPage = total;
-            if (troubleIndicator) troubleIndicator.textContent = `Page ${curPage} / ${totPage}`;
-            if (troubleIndicatorMobile) troubleIndicatorMobile.textContent = `Page ${curPage} / ${totPage}`;
-        } else if (type === 'blog') {
-            const total = DATA.blogLogs.length;
-            const perPage = isMobile ? itemsPerBlogPageMobile : itemsPerBlogPagePC;
-            
-            if (isMobile) {
-                const maxIdx = Math.ceil(total / perPage) - 1;
-                if (blogIndex > maxIdx) blogIndex = maxIdx;
-                if (blogContainer) blogContainer.style.transform = `translateX(-${blogIndex * 100}%)`;
-                if (blogIndicatorMobile) blogIndicatorMobile.textContent = `Page ${blogIndex + 1} / ${maxIdx + 1}`;
-            } else {
-                const maxIdx = Math.ceil(total / perPage) - 1;
-                if (blogIndex > maxIdx) blogIndex = maxIdx;
-                if (blogContainer) blogContainer.style.transform = `translateX(-${blogIndex * 100}%)`;
-                if (blogIndicator) blogIndicator.textContent = `Page ${blogIndex + 1} / ${maxIdx + 1}`;
-            }
+        const totalItems = DATA.blogLogs.length;
+        const perPage = isMobile ? itemsPerBlogMobile : itemsPerBlogPC;
+        const maxPage = Math.ceil(totalItems / perPage);
+
+        if (blogIndex < 0) blogIndex = 0;
+        if (blogIndex >= maxPage) blogIndex = maxPage - 1;
+
+        blogContainer.style.transform = `translateX(-${blogIndex * 100}%)`;
+
+        const text = `Page ${blogIndex + 1} / ${maxPage || 1}`;
+        if (isMobile) {
+            if (blogIndicatorMobile) blogIndicatorMobile.textContent = text;
+        } else {
+            if (blogIndicator) blogIndicator.textContent = text;
         }
     }
 
-    // 슬라이더 이벤트 바인딩
-    if (troublePrev) troublePrev.addEventListener("click", () => { if (troubleIndex > 0) { troubleIndex--; updateSlider('trouble'); } });
-    if (troubleNext) troubleNext.addEventListener("click", () => { if (troubleIndex < DATA.troubleshooting.length - 1) { troubleIndex++; updateSlider('trouble'); } });
-    if (troublePrevMobile) troublePrevMobile.addEventListener("click", () => { if (troubleIndex > 0) { troubleIndex--; updateSlider('trouble'); } });
-    if (troubleNextMobile) troubleNextMobile.addEventListener("click", () => { if (troubleIndex < DATA.troubleshooting.length - 1) { troubleIndex++; updateSlider('trouble'); } });
-
-    if (blogPrev) blogPrev.addEventListener("click", () => { if (blogIndex > 0) { blogIndex--; updateSlider('blog'); } });
-    if (blogNext) blogNext.addEventListener("click", () => { const perPage = window.innerWidth < 768 ? itemsPerBlogPageMobile : itemsPerBlogPagePC; if (blogIndex < Math.ceil(DATA.blogLogs.length / perPage) - 1) { blogIndex++; updateSlider('blog'); } });
-    if (blogPrevMobile) blogPrevMobile.addEventListener("click", () => { if (blogIndex > 0) { blogIndex--; updateSlider('blog'); } });
-    if (blogNextMobile) blogNextMobile.addEventListener("click", () => { const perPage = window.innerWidth < 768 ? itemsPerBlogPageMobile : itemsPerBlogPagePC; if (blogIndex < Math.ceil(DATA.blogLogs.length / perPage) - 1) { blogIndex++; updateSlider('blog'); } });
-
-    // 초기 실행
-    renderTroubleshooting();
-    renderArchitecture(); // 👈 여기서 아키텍처를 독립적으로 정확히 2개만 그립니다.
-    renderBlogLogs();
-    updateSlider('trouble');
-    updateSlider('blog');
-    window.addEventListener("resize", () => { updateSlider('trouble'); updateSlider('blog'); });
+    // 데일리 블로그 버튼 이벤트
+    if (blogPrev) blogPrev.addEventListener("click", () => { if (blogIndex > 0) { blogIndex--; updateBlogSlider(); } });
+    if (blogNext) blogNext.addEventListener("click", () => { const maxPage = Math.ceil(DATA.blogLogs.length / itemsPerBlogPC); if (blogIndex < maxPage - 1) { blogIndex++; updateBlogSlider(); } });
+    if (blogPrevMobile) blogPrevMobile.addEventListener("click", () => { if (blogIndex > 0) { blogIndex--; updateBlogSlider(); } });
+    if (blogNextMobile) blogNextMobile.addEventListener("click", () => { const maxPage = Math.ceil(DATA.blogLogs.length / itemsPerBlogMobile); if (blogIndex < maxPage - 1) { blogIndex++; updateBlogSlider(); } });
 
 
-    // 4. ⭐️ 미니 앨범 (Gallery) 로직 및 모달창 완벽 격리 구현
+    // ==========================================
+    // 4. 미니 앨범 (Gallery) 및 모달 격리 로직
+    // ==========================================
     const albumGrid = document.getElementById("album-grid");
     const galleryModal = document.getElementById("gallery-modal");
     const modalImg = document.getElementById("modal-img");
@@ -146,13 +148,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalComment = document.getElementById("modal-comment");
     const modalClose = document.getElementById("modal-close");
 
-    if (albumGrid && DATA.album) {
-        albumGrid.innerHTML = ""; // 잔여 찌꺼기 초기화
+    function renderAlbum() {
+        if (!albumGrid || !DATA.album) return;
+        albumGrid.innerHTML = ""; 
         DATA.album.forEach((item) => {
             const itemElement = document.createElement("div");
             itemElement.className = "relative aspect-square bg-gray-900 border border-gray-700/60 rounded-lg overflow-hidden cursor-pointer group hover:border-blue-500 transition shadow-inner";
             
-            // 이미지 예외처리 및 기본 앨범 액자 구조화
             itemElement.innerHTML = `
                 <div class="absolute inset-0 flex items-center justify-center text-gray-600 text-[10px] font-sans group-hover:text-blue-400 transition">
                     <i class="fas fa-image"></i>
@@ -160,7 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-300" onerror="this.style.opacity='0';">
             `;
 
-            // 클릭 시 데이터 매핑 후 모달 팝업 오픈
             itemElement.addEventListener("click", () => {
                 if (modalImg) modalImg.src = item.src;
                 if (modalTitle) modalTitle.textContent = item.title;
@@ -170,21 +171,37 @@ document.addEventListener("DOMContentLoaded", () => {
                     galleryModal.classList.remove("hidden");
                     galleryModal.classList.add("flex");
                 }
-                document.body.style.overflow = "hidden"; // 배경 스크ロール 락
+                document.body.style.overflow = "hidden";
             });
 
             albumGrid.appendChild(itemElement);
         });
     }
 
-    // 모달창 닫기 이벤트 핸들러
     if (modalClose && galleryModal) {
         const closeModal = () => {
             galleryModal.classList.add("hidden");
             galleryModal.classList.remove("flex");
-            document.body.style.overflow = ""; // 락 해제
+            document.body.style.overflow = "";
         };
         modalClose.addEventListener("click", closeModal);
         galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(); });
     }
+
+
+    // ==========================================
+    // 5. 초기화 및 리사이즈 연동
+    // ==========================================
+    renderTroubleshooting();
+    renderArchitecture();
+    renderBlogLogs();
+    renderAlbum();
+
+    updateTroubleSlider();
+    updateBlogSlider();
+
+    window.addEventListener("resize", () => {
+        updateTroubleSlider();
+        updateBlogSlider();
+    });
 });
