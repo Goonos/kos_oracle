@@ -124,23 +124,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 2. 아키텍처 백서 렌더링
+    // 2. 아키텍처 백서 렌더링 (중복 축적 버그 방어 완료 ⭐️)
     const archContainer = document.getElementById("arch-container");
-    DATA.architecture.forEach(item => {
-        const tagsHtml = item.tags.map(tag => `<span class="text-[10px] md:text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded">${tag}</span>`).join("");
-        archContainer.innerHTML += `
-            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 md:p-6 flex flex-col justify-between hover:border-blue-500/30 transition">
-                <div>
-                    <div class="flex gap-1.5 mb-3 flex-wrap">${tagsHtml}</div>
-                    <h3 class="text-base md:text-lg font-bold text-white mb-2 leading-snug">${item.title}</h3>
-                    <p class="text-gray-400 text-xs md:text-sm leading-relaxed mb-4">${item.summary}</p>
+    if (archContainer) {
+        archContainer.innerHTML = ""; // 👈 렌더링 전 기존 요소를 완전히 비워 중복 생성을 막습니다.
+        DATA.architecture.forEach(item => {
+            const tagsHtml = item.tags.map(tag => `<span class="text-[10px] md:text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded">${tag}</span>`).join("");
+            archContainer.innerHTML += `
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 md:p-6 flex flex-col justify-between hover:border-blue-500/30 transition">
+                    <div>
+                        <div class="flex gap-1.5 mb-3 flex-wrap">${tagsHtml}</div>
+                        <h3 class="text-base md:text-lg font-bold text-white mb-2 leading-snug">${item.title}</h3>
+                        <p class="text-gray-400 text-xs md:text-sm leading-relaxed mb-4">${item.summary}</p>
+                    </div>
+                    <a href="${item.docLink}" target="_blank" class="text-xs md:text-sm text-blue-400 font-medium hover:underline inline-flex items-center gap-1 mt-auto">
+                        백서 전문 보기 <i class="fas fa-arrow-right text-[10px] md:text-xs"></i>
+                    </a>
                 </div>
-                <a href="${item.docLink}" target="_blank" class="text-xs md:text-sm text-blue-400 font-medium hover:underline inline-flex items-center gap-1 mt-auto">
-                    백서 전문 보기 <i class="fas fa-arrow-right text-[10px] md:text-xs"></i>
-                </a>
-            </div>
-        `;
-    });
+            `;
+        });
+    }
 
     // 3. 블로그 로그 렌더링 및 2x3 면 분할 슬라이더 알고리즘
     const blogContainer = document.getElementById("blog-container");
@@ -167,105 +170,4 @@ document.addEventListener("DOMContentLoaded", () => {
                             <h3 class="text-sm md:text-base font-bold text-white mt-1 mb-1.5 line-clamp-1">${item.title}</h3>
                             <p class="text-gray-400 text-xs leading-relaxed mb-2 line-clamp-2">${item.summary}</p>
                         </div>
-                        <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-800/50">
-                            <div class="flex flex-wrap gap-1">${tagsHtml}</div>
-                            <a href="${item.link}" target="_blank" class="text-[10px] md:text-xs text-gray-400 hover:text-blue-400 font-medium flex items-center gap-1 shrink-0 ml-2">
-                                원문 ↗
-                            </a>
-                        </div>
-                    </div>
-                `;
-            });
-
-            pageHtml += `</div>`;
-            blogContainer.innerHTML += pageHtml;
-        }
-
-        function updateSlider() {
-            const offset = currentPage * 100;
-            blogContainer.style.transform = `translateX(-${offset}%)`;
-
-            const indicatorText = `Page ${currentPage + 1} / ${totalPages}`;
-            document.getElementById("blog-indicator").innerText = indicatorText;
-            document.getElementById("blog-indicator-mobile").innerText = indicatorText;
-        }
-
-        const prevButtons = [document.getElementById("blog-prev"), document.getElementById("blog-prev-mobile")];
-        const nextButtons = [document.getElementById("blog-next"), document.getElementById("blog-next-mobile")];
-
-        prevButtons.forEach(btn => {
-            if (btn) {
-                btn.addEventListener("click", () => {
-                    if (currentPage > 0) {
-                        currentPage--;
-                        updateSlider();
-                    }
-                });
-            }
-        });
-
-        nextButtons.forEach(btn => {
-            if (btn) {
-                btn.addEventListener("click", () => {
-                    if (currentPage < totalPages - 1) {
-                        currentPage++;
-                        updateSlider();
-                    }
-                });
-            }
-        });
-
-        updateSlider();
-    }
-
-    // =================================================================
-    // ⭐️ [오직 이 부분만 추가됨] 미니 앨범(Gallery) 데이터 연동 디버깅 전용 스크립트
-    // =================================================================
-    const albumGrid = document.getElementById("album-grid");
-    const galleryModal = document.getElementById("gallery-modal");
-    const modalImg = document.getElementById("modal-img");
-    const modalTitle = document.getElementById("modal-title");
-    const modalComment = document.getElementById("modal-comment");
-    const modalClose = document.getElementById("modal-close");
-
-    if (albumGrid && DATA.album) {
-        albumGrid.innerHTML = ""; // 기존 오작동 노드 초기화
-        DATA.album.forEach((item) => {
-            const itemElement = document.createElement("div");
-            itemElement.className = "relative aspect-square bg-gray-900 border border-gray-700/60 rounded-lg overflow-hidden cursor-pointer group hover:border-blue-500 transition shadow-inner";
-            
-            itemElement.innerHTML = `
-                <div class="absolute inset-0 flex items-center justify-center text-gray-600 text-[10px] font-sans group-hover:text-blue-400 transition">
-                    <i class="fas fa-image"></i>
-                </div>
-                <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-300" onerror="this.style.opacity='0';">
-            `;
-
-            itemElement.addEventListener("click", () => {
-                if (modalImg) modalImg.src = item.src;
-                if (modalTitle) modalTitle.textContent = item.title;
-                if (modalComment) modalComment.innerHTML = item.comment;
-                
-                if (galleryModal) {
-                    galleryModal.classList.remove("hidden");
-                    galleryModal.classList.add("flex");
-                }
-                document.body.style.overflow = "hidden";
-            });
-
-            albumGrid.appendChild(itemElement);
-        });
-    }
-
-    if (modalClose && galleryModal) {
-        const closeModal = () => {
-            galleryModal.classList.add("hidden");
-            galleryModal.classList.remove("flex");
-            document.body.style.overflow = "";
-        };
-        modalClose.addEventListener("click", closeModal);
-        galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(); });
-    }
-
-    hljs.highlightAll();
-});
+                        <div class="flex justify-
