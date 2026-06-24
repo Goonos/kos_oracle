@@ -67,7 +67,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 troubleContainer.innerHTML += phtml;
             }
 
+            function closeAllDetails() {
+                document.querySelectorAll(".toggle-detail-btn").forEach(btn => {
+                    const targetId = btn.getAttribute("data-target");
+                    const targetEl = document.getElementById(targetId);
+                    if (!targetEl) return;
+                    
+                    const icon = btn.querySelector("i");
+                    const btnText = btn.querySelector("span");
+
+                    if (targetEl.style.maxHeight !== "" && targetEl.style.maxHeight !== "0px") {
+                        targetEl.style.maxHeight = "0px";
+                        if (icon) icon.style.transform = "rotate(0deg)";
+                        if (btnText) btnText.innerText = "자세히 보기";
+                        btn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+                    }
+                });
+            }
+
             function updateTroubleSlider() {
+                closeAllDetails(); 
+
                 const offset = tCurrentPage * 100;
                 if (troubleContainer) troubleContainer.style.transform = `translateX(-${offset}%)`;
                 
@@ -131,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 2. 아키텍처 백서 섹션 (안전 격리 완료)
+    // 2. 아키텍처 백서 섹션
     // ==========================================
     try {
         const archContainer = document.getElementById("arch-container");
@@ -244,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 4. 미니 앨범(Gallery) 및 안전 검증 예외 제어 (철저한 방어선 ⭐️)
+    // 4. 미니 앨범(Gallery) 및 내부 서핑 알고리즘 고도화 (⭐️ 좌우 이동 추가)
     // ==========================================
     try {
         const albumGrid = document.getElementById("album-grid");
@@ -253,11 +273,25 @@ document.addEventListener("DOMContentLoaded", () => {
         const modalTitle = document.getElementById("modal-title");
         const modalComment = document.getElementById("modal-comment");
         const modalClose = document.getElementById("modal-close");
+        
+        // 새로 매핑된 모달 전용 제어 장치
+        const modalPrev = document.getElementById("modal-prev");
+        const modalNext = document.getElementById("modal-next");
 
-        // HTML 내부에서 요소가 실존할 때만 구동되도록 이중 체크 설계
+        let currentAlbumIndex = 0; // 현재 열린 이미지 인덱스 상태 저장소
+
+        // 모달 데이터 갱신 서브루틴
+        function updateModalData(idx) {
+            const currentItem = DATA.album[idx];
+            if (!currentItem) return;
+            if (modalImg) modalImg.src = currentItem.src;
+            if (modalTitle) modalTitle.textContent = currentItem.title;
+            if (modalComment) modalComment.innerHTML = currentItem.comment;
+        }
+
         if (albumGrid && DATA.album) {
             albumGrid.innerHTML = ""; 
-            DATA.album.forEach((item) => {
+            DATA.album.forEach((item, index) => {
                 const itemElement = document.createElement("div");
                 itemElement.className = "relative aspect-square bg-gray-900 border border-gray-700/60 rounded-lg overflow-hidden cursor-pointer group hover:border-blue-500 transition shadow-inner";
                 
@@ -269,9 +303,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
 
                 itemElement.addEventListener("click", () => {
-                    if (modalImg) modalImg.src = item.src;
-                    if (modalTitle) modalTitle.textContent = item.title;
-                    if (modalComment) modalComment.innerHTML = item.comment;
+                    currentAlbumIndex = index; // 클릭된 슬롯 인덱스 동기화
+                    updateModalData(currentAlbumIndex);
                     
                     if (galleryModal) {
                         galleryModal.classList.remove("hidden");
@@ -284,6 +317,30 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
+        // 모달 내부◀ 왼쪽 버튼 클릭 이벤트 핸들러
+        if (modalPrev) {
+            modalPrev.addEventListener("click", (e) => {
+                e.stopPropagation(); // 모달 바닥 닫힘 전파 차단
+                if (DATA.album && DATA.album.length > 0) {
+                    // 첫 이미지에서 이전 누르면 마지막 이미지로 순환
+                    currentAlbumIndex = (currentAlbumIndex - 1 + DATA.album.length) % DATA.album.length;
+                    updateModalData(currentAlbumIndex);
+                }
+            });
+        }
+
+        // 모달 내부▶ 오른쪽 버튼 클릭 이벤트 핸들러
+        if (modalNext) {
+            modalNext.addEventListener("click", (e) => {
+                e.stopPropagation(); // 모달 바닥 닫힘 전파 차단
+                if (DATA.album && DATA.album.length > 0) {
+                    // 마지막 이미지에서 다음 누르면 첫 이미지로 순환
+                    currentAlbumIndex = (currentAlbumIndex + 1) % DATA.album.length;
+                    updateModalData(currentAlbumIndex);
+                }
+            });
+        }
+
         if (modalClose && galleryModal) {
             const closeModal = () => {
                 galleryModal.classList.add("hidden");
@@ -291,10 +348,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.body.style.overflow = "";
             };
             modalClose.addEventListener("click", closeModal);
-            galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(); });
+            galleryModal.addEventListener("click", (e) => { 
+                // 빈 배경을 눌렀을 때만 닫히도록 바인딩 스코프 제한
+                if (e.target === galleryModal) closeModal(); 
+            });
         }
     } catch (e) {
-        console.error("Album & Modal Elements가 HTML에 아직 존재하지 않습니다. (건너뜀)");
+        console.error("Album & Modal Elements 예외 처리:", e);
     }
 
     // ==========================================
