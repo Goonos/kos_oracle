@@ -34,17 +34,24 @@
                     </div>
                 
                 <div class="space-y-2.5 font-mono text-sm w-full">
-                    <h2 class="text-xl md:text-2xl font-extrabold text-white tracking-wide">권오승</h2>
-                    <p class="text-blue-400 font-medium text-xs md:text-sm">[ 1998.03.31 ]</p>
-                    <p class="text-gray-400 hover:text-blue-300 transition text-xs md:text-sm break-all">
-                        <i class="fas fa-envelope mr-1.5"></i>ohseung31@naver.com
-                    </p>
-                    <div class="pt-3 flex justify-center md:justify-start">
-                        <a href="https://github.com/Determination-github" target="_blank" class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium inline-flex items-center gap-2 border border-gray-700 transition">
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
-                    </div>
-                </div>
+    <h2 class="text-xl md:text-2xl font-extrabold text-white tracking-wide">권오승</h2>
+    <p class="text-blue-400 font-medium text-xs md:text-sm">[ 1998.03.31 ]</p>
+    <p class="text-gray-400 hover:text-blue-300 transition text-xs md:text-sm break-all">
+        <i class="fas fa-envelope mr-1.5"></i>ohseung31@naver.com
+    </p>
+    
+    <div class="pt-4 w-full">
+        <p class="text-gray-500 text-[11px] mb-2 text-left font-sans uppercase tracking-wider"><i class="fas fa-images mr-1"></i> Gallery</p>
+        <div id="album-grid" class="grid grid-cols-3 gap-1.5 w-full aspect-square bg-gray-800/50 p-1.5 rounded-xl border border-gray-800">
+            </div>
+    </div>
+
+    <div class="pt-3 flex justify-center md:justify-start">
+        <a href="https://github.com/Determination-github" target="_blank" ...>
+            <i class="fab fa-github"></i> GitHub
+        </a>
+    </div>
+</div>
             </div>
 
             <!-- 오른쪽: 학력, 경력, 자격증 -->
@@ -243,5 +250,21 @@
 
     <script src="data.js"></script>
     <script src="script.js"></script>
+    <div id="gallery-modal" class="fixed inset-0 bg-black/90 z-[100] hidden flex-col items-center justify-center p-4 backdrop-blur-sm">
+        <button id="modal-close" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl p-2 cursor-pointer transition">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="max-w-2xl w-full flex flex-col items-center gap-4 text-center">
+            <img id="modal-img" src="" alt="확대 이미지" class="max-h-[70vh] max-w-full rounded-xl object-contain border border-gray-800 shadow-2xl">
+            <h4 id="modal-title" class="text-lg font-bold text-white mt-2"></h4>
+            <p id="modal-comment" class="text-sm text-gray-400 max-w-md word-break-keep-all leading-relaxed"></p>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
 </body>
 </html>
