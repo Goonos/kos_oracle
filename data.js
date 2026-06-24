@@ -1,14 +1,26 @@
 // 포트폴리오에 들어갈 모든 데이터 정의
 const DATA = {
     // 1. 트러블슈팅 데이터
+// 1. 트러블슈팅 데이터 (상세 보기 데이터 추가 버전)
     troubleshooting: [
         {
+            id: "ts-01", // 고유 ID 추가
             title: "특정 집계 쿼리 타임아웃 발생 및 인덱스 재구성을 통한 개선",
             context: "대용량 결제 테이블에서 특정 기간 조회 시 5초 이상 소요되며 가끔 시스템 타임아웃 발생.",
-            analysis: "EXPLAIN PLAN 분석 결과, 결합 인덱스의 컬럼 순서가 잘못되어 Full Table Scan 및 대규모 Sort-Merge Join이 유발됨 확인.",
-            action: "조회 조건 빈도와 카디널리티(Cardinality)를 분석하여 복합 인덱스(Composite Index) 컬럼 순서 재배치 및 쿼리 힌트(Hint) 적용.",
             result: "조회 응답 속도 96% 개선 (5.2초 -> 0.2초), CPU Peak 부하 안정화.",
-            code: "-- 변경 전 인덱스: (STATUS, CREATED_AT)\n-- 변경 후 인덱스: (CREATED_AT, STATUS)\nSELECT /*+ INDEX(p idx_payment_created_status) */ * \nFROM payment p \nWHERE created_at >= '2026-01-01' AND status = 'COMPLETED';"
+            code: "-- 변경 전 인덱스: (STATUS, CREATED_AT)\n-- 변경 후 인덱스: (CREATED_AT, STATUS)\nSELECT /*+ INDEX(p idx_payment_created_status) */ * \nFROM payment p \nWHERE created_at >= '2026-01-01' AND status = 'COMPLETED';",
+            
+            // ⭐️ 디테일 버튼을 누르면 노출될 상세 정보들
+            details: [
+                {
+                    subtitle: "🔍 문제 진단 및 원인 분석 과정 (Deep Dive)",
+                    content: "오라클 AWR(Automatic Workload Repository) 보고서와 <code>EXPLAIN PLAN</code>을 통해 해당 쿼리가 <code>HASH JOIN</code> 및 <code>SORT MERGE JOIN</code>을 수행하는 과정에서 대규모 임시 세그먼트(Temp Segment)를 디스크에 쓰고 있는 것을 발견했습니다. 기존 인덱스는 컬럼의 카디널리티(선택도)를 고려하지 않고 <code>STATUS</code>가 선두 컬럼으로 잡혀 있어, 실제 범위 검색 조건인 <code>CREATED_AT</code>의 장점을 전혀 활용하지 못하고 Full Table Scan에 준하는 Cost가 발생하고 있었습니다."
+                },
+                {
+                    subtitle: "🛠️ 튜닝 시나리오 및 검증 절차",
+                    content: "1단계로 선두 컬럼을 범위 검색 조건인 <code>CREATED_AT</code>으로 변경한 복합 인덱스를 생성했습니다. 2단계로 오라클 옵티마이저가 올바른 인덱스를 강제 인지할 수 있도록 쿼리에 <code>INDEX</code> 힌트를 명시했습니다. 테스트 환경에서 1,500만 건의 더미 데이터를 적재한 후 스트레스 테스트를 수행한 결과, 블록 I/O(Logical Reads) 수치가 기존 대비 1/50 수준으로 급감하는 전 과정을 SQL Trace(tkprof)를 통해 정량적으로 검증 완료했습니다."
+                }
+            ]
         }
     ],
 
