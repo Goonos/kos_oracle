@@ -146,4 +146,15 @@ const DATA = {
             link: "https://blog.naver.com/10soong"
         },
     ]
+    album: [
+        { id: "img-01", src: "images/photo1.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-02", src: "images/photo2.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-03", src: "images/photo3.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-04", src: "images/photo4.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-05", src: "images/photo5.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-06", src: "images/photo6.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-07", src: "images/photo7.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-08", src: "images/photo8.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-09", src: "images/photo9.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." }
+    ]
 };
