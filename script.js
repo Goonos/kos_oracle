@@ -42,96 +42,65 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     });
 
-    // 3. 블로그 로그 렌더링 및 슬라이더 알고리즘 (⭐️ 대용량 최적화 확장)
+    // 3. 블로그 로그 렌더링 및 3x3 면 분할 슬라이더 알고리즘 (⭐️ 대용량 최적화 반영)
     const blogContainer = document.getElementById("blog-container");
     
     if (DATA.blogLogs && DATA.blogLogs.length > 0) {
-        DATA.blogLogs.forEach(item => {
-            const tagsHtml = item.tags.map(tag => `<span class="text-[10px] text-blue-400 bg-blue-500/5 px-2 py-0.5 rounded font-mono break-keep">#${tag}</span>`).join(" ");
-            
-            // 각 카드를 슬라이더 트랙의 한 칸(w-full, sm:w-1/2, lg:w-1/3)으로 유연하게 배치
-            blogContainer.innerHTML += `
-                <div class="w-full sm:w-1/2 lg:w-1/3 shrink-0 px-2 box-border">
-                    <div class="bg-gray-800/30 border border-gray-800 rounded-lg p-4 md:p-5 flex flex-col justify-between hover:bg-gray-800/50 transition h-full">
+        const itemsPerPage = 9; // 한 페이지에 노출될 최대 카드 개수 (3x3 = 9)
+        const totalItems = DATA.blogLogs.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        let currentPage = 0;
+
+        // 전체 데이터를 9개씩 쪼개어 가로 슬라이드용 '페이지 격자판' 생성
+        for (let i = 0; i < totalPages; i++) {
+            const startIdx = i * itemsPerPage;
+            const endIdx = Math.min(startIdx + itemsPerPage, totalItems);
+            const chunk = DATA.blogLogs.slice(startIdx, endIdx);
+
+            // 개별 페이지 생성 (PC에서는 grid-cols-3 구조로 배치되어 최대 3x3 격자를 이룸)
+            let pageHtml = `<div class="w-full shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-1 box-border">`;
+
+            chunk.forEach(item => {
+                const tagsHtml = item.tags.map(tag => `<span class="text-[10px] text-blue-400 bg-blue-500/5 px-2 py-0.5 rounded font-mono break-keep">#${tag}</span>`).join(" ");
+                pageHtml += `
+                    <div class="bg-gray-800/30 border border-gray-800 rounded-lg p-4 flex flex-col justify-between hover:bg-gray-800/50 transition h-44">
                         <div>
                             <span class="text-[10px] md:text-xs text-gray-500 font-mono">${item.date}</span>
-                            <h3 class="text-sm md:text-base font-bold text-white mt-1 mb-2 line-clamp-1">${item.title}</h3>
-                            <p class="text-gray-400 text-xs leading-relaxed mb-4 line-clamp-2">${item.summary}</p>
+                            <h3 class="text-sm md:text-base font-bold text-white mt-1 mb-1.5 line-clamp-1">${item.title}</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed mb-2 line-clamp-2">${item.summary}</p>
                         </div>
-                        <div class="flex justify-between items-center mt-auto pt-3 border-t border-gray-800/50">
+                        <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-800/50">
                             <div class="flex flex-wrap gap-1">${tagsHtml}</div>
                             <a href="${item.link}" target="_blank" class="text-[10px] md:text-xs text-gray-400 hover:text-blue-400 font-medium flex items-center gap-1 shrink-0 ml-2">
                                 원문 ↗
                             </a>
                         </div>
                     </div>
-                </div>
-            `;
-        });
+                `;
+            });
 
-        // 고도화된 슬라이더 상태 변수
-        let currentIndex = 0;
-        const totalItems = DATA.blogLogs.length;
-
-        // 현재 화면 크기에 부합하는 카드 노출 개수 연산
-        function getItemsPerView() {
-            if (window.innerWidth >= 1024) return 3; // PC: 3개
-            if (window.innerWidth >= 640) return 2;  // 태블릿: 2개
-            return 1;                                // 모바일: 1개
+            pageHtml += `</div>`;
+            blogContainer.innerHTML += pageHtml;
         }
 
-        // 슬라이더 트랙 위치 및 인디케이터 갱신 함수
+        // 페이지 변위 조절 및 인디케이터 상태 매핑
         function updateSlider() {
-            const itemsPerView = getItemsPerView();
-            const maxIndex = Math.max(0, totalItems - itemsPerView);
-            
-            // 예외 방지: 화면 크기가 변해 현재 인덱스가 최대치를 초과하면 보정
-            if (currentIndex > maxIndex) currentIndex = maxIndex;
-
-            // 정밀 퍼센트 기반 좌우 변위 이동 (X축 transform)
-            const offset = currentIndex * (100 / itemsPerView);
+            const offset = currentPage * 100;
             blogContainer.style.transform = `translateX(-${offset}%)`;
 
-            // 상단 및 모바일용 인디케이터 상태 실시간 표기 (예: 1 / 150)
-            const indicatorText = `${currentIndex + 1} / ${totalItems}`;
+            const indicatorText = `Page ${currentPage + 1} / ${totalPages}`;
             document.getElementById("blog-indicator").innerText = indicatorText;
             document.getElementById("blog-indicator-mobile").innerText = indicatorText;
         }
 
-        // 이벤트 리스너 통합 매핑
         const prevButtons = [document.getElementById("blog-prev"), document.getElementById("blog-prev-mobile")];
         const nextButtons = [document.getElementById("blog-next"), document.getElementById("blog-next-mobile")];
 
         prevButtons.forEach(btn => {
             if (btn) {
                 btn.addEventListener("click", () => {
-                    if (currentIndex > 0) {
-                        currentIndex--;
+                    if (currentPage > 0) {
+                        currentPage--;
                         updateSlider();
                     }
                 });
-            }
-        });
-
-        nextButtons.forEach(btn => {
-            if (btn) {
-                btn.addEventListener("click", () => {
-                    const itemsPerView = getItemsPerView();
-                    if (currentIndex < totalItems - itemsPerView) {
-                        currentIndex++;
-                        updateSlider();
-                    }
-                });
-            }
-        });
-
-        // 해상도 변경 시 슬라이더 비율 실시간 재계산
-        window.addEventListener("resize", updateSlider);
-        
-        // 초기 구동
-        updateSlider();
-    }
-
-    // 코드 하이라이팅 초기화
-    hljs.highlightAll();
-});
