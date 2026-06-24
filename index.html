@@ -161,12 +161,39 @@
         </div>
     </section>
 
-    <!-- 3. 데일리 블로그 로그 섹션 -->
-    <section id="blog" class="py-16 md:py-20 px-5 md:px-6 max-w-5xl mx-auto">
-        <h2 class="text-xl md:text-2xl font-bold mb-2 text-white text-center md:text-left"><i class="fas fa-book text-blue-500 mr-2"></i> Daily Study Log</h2>
-        <p class="text-gray-400 text-xs md:text-sm mb-8 md:mb-10 text-center md:text-left">매일 다른 블로그에 꾸준히 기록하고 학습한 흔적들의 아카이브입니다.</p>
-        <div id="blog-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- script.js에서 동적으로 채워집니다 -->
+    <!-- 3. 데일리 블로그 로그 섹션 --><section id="blog" class="py-16 md:py-20 px-5 md:px-6 max-w-5xl mx-auto border-t border-gray-800">
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 md:mb-10 gap-4">
+            <div class="text-center md:text-left">
+                <h2 class="text-xl md:text-2xl font-bold mb-2 text-white"><i class="fas fa-book text-blue-500 mr-2"></i> Daily Study Log</h2>
+                <p class="text-gray-400 text-xs md:text-sm">매일 다른 블로그에 꾸준히 기록하고 학습한 흔적들의 아카이브입니다.</p>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-3">
+                <span id="blog-indicator" class="text-xs font-mono text-gray-500">1 / 1</span>
+                <div class="flex gap-1.5">
+                    <button id="blog-prev" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 rounded-full flex items-center justify-center border border-gray-700 transition cursor-pointer">
+                        <i class="fas fa-chevron-left text-xs"></i>
+                    </button>
+                    <button id="blog-next" class="bg-gray-800 hover:bg-gray-700 text-white w-9 h-9 rounded-full flex items-center justify-center border border-gray-700 transition cursor-pointer">
+                        <i class="fas fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="overflow-hidden w-full">
+            <div id="blog-container" class="flex transition-transform duration-500 ease-in-out -mx-2">
+                </div>
+        </div>
+
+        <div class="flex md:hidden justify-center items-center gap-4 mt-6">
+            <button id="blog-prev-mobile" class="bg-gray-800 hover:bg-gray-700 text-white w-10 h-10 rounded-full flex items-center justify-center border border-gray-700 transition">
+                <i class="fas fa-chevron-left text-sm"></i>
+            </button>
+            <span id="blog-indicator-mobile" class="text-xs font-mono text-gray-400">1 / 1</span>
+            <button id="blog-next-mobile" class="bg-gray-800 hover:bg-gray-700 text-white w-10 h-10 rounded-full flex items-center justify-center border border-gray-700 transition">
+                <i class="fas fa-chevron-right text-sm"></i>
+            </button>
         </div>
     </section>
 
