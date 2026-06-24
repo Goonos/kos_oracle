@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. 트러블슈팅 렌더링 및 1x1 면 분할 슬라이더 알고리즘 (⭐️ 한 페이지당 1개 사례)
+    // 1. 트러블슈팅 렌더링 및 1x1 면 분할 슬라이더 알고리즘
     const troubleContainer = document.getElementById("trouble-container");
     
     if (DATA.troubleshooting && DATA.troubleshooting.length > 0) {
-        const tItemsPerPage = 1; // ⭐️ 요구사항 반영: 한 페이지에 딱 1개만 노출
+        const tItemsPerPage = 1;
         const tTotalItems = DATA.troubleshooting.length;
         const tTotalPages = Math.ceil(tTotalItems / tItemsPerPage);
         let tCurrentPage = 0;
@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < tTotalPages; i++) {
             const item = DATA.troubleshooting[i];
             
-            // 상세 항목들을 HTML 문자열로 조립
             let detailsHtml = "";
             if (item.details && item.details.length > 0) {
                 item.details.forEach(det => {
@@ -25,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // w-full shrink-0으로 감싸서 한 장의 슬라이드 페이지로 만듭니다
             let phtml = `
                 <div class="w-full shrink-0 px-1 box-border">
                     <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-5 md:p-6 hover:border-gray-700 transition w-full min-w-0 overflow-hidden flex flex-col">
@@ -45,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                         </div>
 
-                        <div id="details-${item.id}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div id="details-${item.id}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out details-box">
                             <div class="py-2">
                                 ${detailsHtml}
                             </div>
@@ -62,8 +60,24 @@ document.addEventListener("DOMContentLoaded", () => {
             troubleContainer.innerHTML += phtml;
         }
 
+        // ⭐️ 추가된 핵심 로직: 페이지 넘길 때 모든 디테일 창을 강제로 접는 기능
+        function closeAllDetails() {
+            document.querySelectorAll(".details-box").forEach(el => {
+                el.style.maxHeight = "0px";
+            });
+            document.querySelectorAll(".toggle-detail-btn").forEach(btn => {
+                const icon = btn.querySelector("i");
+                const btnText = btn.querySelector("span");
+                if (btnText) btnText.innerText = "자세히 보기";
+                if (icon) icon.style.transform = "rotate(0deg)";
+                btn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+            });
+        }
+
         // 트러블슈팅 슬라이더 업데이트 함수
         function updateTroubleSlider() {
+            closeAllDetails(); // ⭐️ 이동하기 전에 먼저 활성화된 디테일을 접어줍니다.
+            
             const offset = tCurrentPage * 100;
             troubleContainer.style.transform = `translateX(-${offset}%)`;
             
@@ -100,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateTroubleSlider();
 
-        // 디테일 토글 버튼 이벤트 리스너 (기능 보존)
+        // 디테일 토글 버튼 이벤트 리스너
         document.querySelectorAll(".toggle-detail-btn").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 const currentBtn = e.currentTarget;
