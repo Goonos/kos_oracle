@@ -1,27 +1,78 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. 트러블슈팅 렌더링
+    // 1. 트러블슈팅 렌더링 (디테일 토글 시스템 탑재)
     const troubleContainer = document.getElementById("trouble-container");
     DATA.troubleshooting.forEach(item => {
+        // 상세 항목들을 HTML 문자열로 조립
+        let detailsHtml = "";
+        if (item.details && item.details.length > 0) {
+            item.details.forEach(det => {
+                detailsHtml += `
+                    <div class="mt-4 border-t border-gray-800/80 pt-4">
+                        <h4 class="text-xs md:text-sm font-bold text-blue-400 mb-1.5">${det.subtitle}</h4>
+                        <p class="text-gray-400 text-xs md:text-sm leading-relaxed">${det.content}</p>
+                    </div>
+                `;
+            });
+        }
+
         troubleContainer.innerHTML += `
-            <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-5 md:p-6 hover:border-gray-700 transition w-full min-w-0 overflow-hidden">
+            <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-5 md:p-6 hover:border-gray-700 transition w-full min-w-0 overflow-hidden flex flex-col">
                 <h3 class="text-lg md:text-xl font-bold text-white mb-4 flex flex-col md:flex-row md:items-center gap-2 items-start w-full min-w-0">
                     <span class="text-[10px] md:text-xs bg-red-500/10 text-red-400 px-2.5 py-1 rounded-full font-mono font-normal whitespace-nowrap shrink-0">Issue</span> 
                     <span class="leading-snug break-all">${item.title}</span>
                 </h3>
+                
                 <div class="grid md:grid-cols-2 gap-5 md:gap-6 text-xs md:text-sm leading-relaxed text-gray-300 w-full min-w-0">
                     <div class="min-w-0 w-full">
                         <p class="mb-3"><strong class="text-blue-400">🚨 현상 (Context):</strong><br>${item.context}</p>
-                        <p class="mb-3"><strong class="text-blue-400">🔍 원인 분석 (Analysis):</strong><br>${item.analysis}</p>
-                        <p><strong class="text-blue-400">💡 해결 조치 (Action):</strong><br>${item.action}</p>
+                        <p class="mb-3"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
                     </div>
                     <div class="min-w-0 w-full overflow-hidden flex flex-col">
-                        <p class="mb-3"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
                         <strong class="text-gray-400 block mb-2">💻 수정된 쿼리/코드:</strong>
-                        <pre class="w-full max-w-full block rounded-lg p-3 md:p-4 bg-gray-950 border border-gray-800 overflow-x-auto text-[10px] md:text-xs font-mono"><code class="language-sql">${item.code}</code></pre>
+                        <pre class="w-full max-w-full block rounded-lg p-3 bg-gray-950 border border-gray-800 overflow-x-auto text-[10px] md:text-xs font-mono"><code class="language-sql">${item.code}</code></pre>
                     </div>
+                </div>
+
+                <!-- ⭐️ 숨겨진 디테일 박스 (기본값: hidden, max-h-0 상태에서 토글됨) -->
+                <div id="details-${item.id}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                    <div class="py-2">
+                        ${detailsHtml}
+                    </div>
+                </div>
+
+                <!-- 디테일 토글 버튼 -->
+                <div class="mt-4 pt-4 border-t border-gray-800/40 flex justify-end">
+                    <button data-target="details-${item.id}" class="toggle-detail-btn text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-md border border-gray-700 transition inline-flex items-center gap-1 cursor-pointer">
+                        <span>자세히 보기</span> <i class="fas fa-chevron-down text-[10px] transition-transform duration-300"></i>
+                    </button>
                 </div>
             </div>
         `;
+    });
+
+    // 디테일 버튼 클릭 이벤트 리스너 설정
+    document.querySelectorAll(".toggle-detail-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const currentBtn = e.currentTarget;
+            const targetId = currentBtn.getAttribute("data-target");
+            const targetEl = document.getElementById(targetId);
+            const icon = currentBtn.querySelector("i");
+            const btnText = currentBtn.querySelector("span");
+
+            if (targetEl.style.maxHeight === "" || targetEl.style.maxHeight === "0px") {
+                // 열기: 내부 실제 높이만큼 늘려줌
+                targetEl.style.maxHeight = targetEl.scrollHeight + "px";
+                icon.style.transform = "rotate(180deg)";
+                btnText.innerText = "접기";
+                currentBtn.classList.add("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+            } else {
+                // 닫기
+                targetEl.style.maxHeight = "0px";
+                icon.style.transform = "rotate(0deg)";
+                btnText.innerText = "자세히 보기";
+                currentBtn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+            }
+        });
     });
 
     // 2. 아키텍처 백서 렌더링
@@ -42,22 +93,20 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     });
 
-    // 3. 블로그 로그 렌더링 및 2x3 면 분할 슬라이더 알고리즘 (⭐️ 2x3 최적화 반영)
+    // 3. 블로그 로그 렌더링 및 2x3 면 분할 슬라이더 알고리즘
     const blogContainer = document.getElementById("blog-container");
     
     if (DATA.blogLogs && DATA.blogLogs.length > 0) {
-        const itemsPerPage = 6; // 변경 완료: 한 페이지에 노출될 최대 카드 개수 (2열 x 3행 = 6)
+        const itemsPerPage = 6;
         const totalItems = DATA.blogLogs.length;
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         let currentPage = 0;
 
-        // 전체 데이터를 6개씩 쪼개어 가로 슬라이드용 '페이지 격자판' 생성
         for (let i = 0; i < totalPages; i++) {
             const startIdx = i * itemsPerPage;
             const endIdx = Math.min(startIdx + itemsPerPage, totalItems);
             const chunk = DATA.blogLogs.slice(startIdx, endIdx);
 
-            // 변경 완료: lg:grid-cols-2 구조로 배치하여 최대 2x3 격자를 이룸
             let pageHtml = `<div class="w-full shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 px-1 box-border">`;
 
             chunk.forEach(item => {
@@ -83,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
             blogContainer.innerHTML += pageHtml;
         }
 
-        // 페이지 변위 조절 및 인디케이터 상태 매핑
         function updateSlider() {
             const offset = currentPage * 100;
             blogContainer.style.transform = `translateX(-${offset}%)`;
@@ -121,6 +169,5 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSlider();
     }
 
-    // 코드 하이라이팅 초기화
     hljs.highlightAll();
 });
