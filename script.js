@@ -163,4 +163,109 @@ document.addEventListener("DOMContentLoaded", () => {
                 pageHtml += `
                     <div class="bg-gray-800/30 border border-gray-800 rounded-lg p-4 flex flex-col justify-between hover:bg-gray-800/50 transition h-44">
                         <div>
-                            <span class="text-
+                            <span class="text-[10px] md:text-xs text-gray-500 font-mono">${item.date}</span>
+                            <h3 class="text-sm md:text-base font-bold text-white mt-1 mb-1.5 line-clamp-1">${item.title}</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed mb-2 line-clamp-2">${item.summary}</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-auto pt-2 border-t border-gray-800/50">
+                            <div class="flex flex-wrap gap-1">${tagsHtml}</div>
+                            <a href="${item.link}" target="_blank" class="text-[10px] md:text-xs text-gray-400 hover:text-blue-400 font-medium flex items-center gap-1 shrink-0 ml-2">
+                                원문 ↗
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            pageHtml += `</div>`;
+            blogContainer.innerHTML += pageHtml;
+        }
+
+        function updateSlider() {
+            const offset = currentPage * 100;
+            blogContainer.style.transform = `translateX(-${offset}%)`;
+
+            const indicatorText = `Page ${currentPage + 1} / ${totalPages}`;
+            document.getElementById("blog-indicator").innerText = indicatorText;
+            document.getElementById("blog-indicator-mobile").innerText = indicatorText;
+        }
+
+        const prevButtons = [document.getElementById("blog-prev"), document.getElementById("blog-prev-mobile")];
+        const nextButtons = [document.getElementById("blog-next"), document.getElementById("blog-next-mobile")];
+
+        prevButtons.forEach(btn => {
+            if (btn) {
+                btn.addEventListener("click", () => {
+                    if (currentPage > 0) {
+                        currentPage--;
+                        updateSlider();
+                    }
+                });
+            }
+        });
+
+        nextButtons.forEach(btn => {
+            if (btn) {
+                btn.addEventListener("click", () => {
+                    if (currentPage < totalPages - 1) {
+                        currentPage++;
+                        updateSlider();
+                    }
+                });
+            }
+        });
+
+        updateSlider();
+    }
+
+    // =================================================================
+    // ⭐️ [오직 이 부분만 추가됨] 미니 앨범(Gallery) 데이터 연동 디버깅 전용 스크립트
+    // =================================================================
+    const albumGrid = document.getElementById("album-grid");
+    const galleryModal = document.getElementById("gallery-modal");
+    const modalImg = document.getElementById("modal-img");
+    const modalTitle = document.getElementById("modal-title");
+    const modalComment = document.getElementById("modal-comment");
+    const modalClose = document.getElementById("modal-close");
+
+    if (albumGrid && DATA.album) {
+        albumGrid.innerHTML = ""; // 기존 오작동 노드 초기화
+        DATA.album.forEach((item) => {
+            const itemElement = document.createElement("div");
+            itemElement.className = "relative aspect-square bg-gray-900 border border-gray-700/60 rounded-lg overflow-hidden cursor-pointer group hover:border-blue-500 transition shadow-inner";
+            
+            itemElement.innerHTML = `
+                <div class="absolute inset-0 flex items-center justify-center text-gray-600 text-[10px] font-sans group-hover:text-blue-400 transition">
+                    <i class="fas fa-image"></i>
+                </div>
+                <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-300" onerror="this.style.opacity='0';">
+            `;
+
+            itemElement.addEventListener("click", () => {
+                if (modalImg) modalImg.src = item.src;
+                if (modalTitle) modalTitle.textContent = item.title;
+                if (modalComment) modalComment.innerHTML = item.comment;
+                
+                if (galleryModal) {
+                    galleryModal.classList.remove("hidden");
+                    galleryModal.classList.add("flex");
+                }
+                document.body.style.overflow = "hidden";
+            });
+
+            albumGrid.appendChild(itemElement);
+        });
+    }
+
+    if (modalClose && galleryModal) {
+        const closeModal = () => {
+            galleryModal.classList.add("hidden");
+            galleryModal.classList.remove("flex");
+            document.body.style.overflow = "";
+        };
+        modalClose.addEventListener("click", closeModal);
+        galleryModal.addEventListener("click", (e) => { if (e.target === galleryModal) closeModal(); });
+    }
+
+    hljs.highlightAll();
+});
