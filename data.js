@@ -20,9 +20,8 @@ const DATA = {
                     content: "1단계로 선두 컬럼을 범위 검색 조건인 <code>CREATED_AT</code>으로 변경한 복합 인덱스를 생성했습니다. 2단계로 오라클 옵티마이저가 올바른 인덱스를 강제 인지할 수 있도록 쿼리에 <code>INDEX</code> 힌트를 명시했습니다. 테스트 환경에서 1,500만 건의 더미 데이터를 적재한 후 스트레스 테스트를 수행한 결과, 블록 I/O(Logical Reads) 수치가 기존 대비 1/50 수준으로 급감하는 전 과정을 SQL Trace(tkprof)를 통해 정량적으로 검증 완료했습니다."
                 }
             ]
-        }
-    ],
-            {
+        },
+        {
             id: "ts-02", // 고유 ID 추가
             title: "text",
             context: "text",
@@ -42,6 +41,8 @@ const DATA = {
             ]
         }
     ],
+            
+
     // 2. 아키텍처 및 백서 데이터
     architecture: [
         {
