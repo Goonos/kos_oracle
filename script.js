@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const tTotalPages = Math.ceil(tTotalItems / tItemsPerPage);
         let tCurrentPage = 0;
 
-        // 데이터를 1개씩 쪼개어 가로 슬라이드용 페이지 생성
         for (let i = 0; i < tTotalPages; i++) {
             const item = DATA.troubleshooting[i];
             
@@ -60,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
             troubleContainer.innerHTML += phtml;
         }
 
-        // ⭐️ 추가된 핵심 로직: 페이지 넘길 때 모든 디테일 창을 강제로 접는 기능
         function closeAllDetails() {
             document.querySelectorAll(".details-box").forEach(el => {
                 el.style.maxHeight = "0px";
@@ -74,10 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // 트러블슈팅 슬라이더 업데이트 함수
         function updateTroubleSlider() {
-            closeAllDetails(); // ⭐️ 이동하기 전에 먼저 활성화된 디테일을 접어줍니다.
-            
+            closeAllDetails();
             const offset = tCurrentPage * 100;
             troubleContainer.style.transform = `translateX(-${offset}%)`;
             
@@ -86,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("trouble-indicator-mobile").innerText = indicatorText;
         }
 
-        // 트러블슈팅 이벤트 리스너 결합
         const tPrevButtons = [document.getElementById("trouble-prev"), document.getElementById("trouble-prev-mobile")];
         const tNextButtons = [document.getElementById("trouble-next"), document.getElementById("trouble-next-mobile")];
 
@@ -114,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateTroubleSlider();
 
-        // 디테일 토글 버튼 이벤트 리스너
         document.querySelectorAll(".toggle-detail-btn").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 const currentBtn = e.currentTarget;
@@ -156,14 +150,20 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     });
 
-    // 3. 블로그 로그 렌더링 및 2x3 면 분할 슬라이더 알고리즘
+    // 3. 블로그 로그 렌더링 (⭐️ 모바일 해상도 감지 및 최대 3개 노출 반영 버젼)
     const blogContainer = document.getElementById("blog-container");
     
     if (DATA.blogLogs && DATA.blogLogs.length > 0) {
-        const itemsPerPage = 6;
+        // 화면 크기 체크하여 한 페이지에 보여줄 개수 설정 (모바일: 3개, PC: 6개)
+        const isMobile = window.innerWidth < 768;
+        const itemsPerPage = isMobile ? 3 : 6; 
+        
         const totalItems = DATA.blogLogs.length;
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         let currentPage = 0;
+
+        // 슬라이더 프레임 비우기 및 새로 생성
+        blogContainer.innerHTML = "";
 
         for (let i = 0; i < totalPages; i++) {
             const startIdx = i * itemsPerPage;
