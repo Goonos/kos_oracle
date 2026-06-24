@@ -1,23 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. 트러블슈팅 렌더링
+    // 1. 트러블슈팅 렌더링 (모바일 코드박스 버그 수정 버전)
     const troubleContainer = document.getElementById("trouble-container");
     DATA.troubleshooting.forEach(item => {
         troubleContainer.innerHTML += `
-            <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-5 md:p-6 hover:border-gray-700 transition">
-                <h3 class="text-lg md:text-xl font-bold text-white mb-4 flex flex-col md:flex-row md:items-center gap-2 items-start">
-                    <span class="text-[10px] md:text-xs bg-red-500/10 text-red-400 px-2.5 py-1 rounded-full font-mono font-normal whitespace-nowrap">Issue</span> 
-                    <span class="leading-snug">${item.title}</span>
+            <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-5 md:p-6 hover:border-gray-700 transition w-full min-w-0 overflow-hidden">
+                <h3 class="text-lg md:text-xl font-bold text-white mb-4 flex flex-col md:flex-row md:items-center gap-2 items-start w-full min-w-0">
+                    <span class="text-[10px] md:text-xs bg-red-500/10 text-red-400 px-2.5 py-1 rounded-full font-mono font-normal whitespace-nowrap shrink-0">Issue</span> 
+                    <span class="leading-snug break-all">${item.title}</span>
                 </h3>
-                <div class="grid md:grid-cols-2 gap-5 md:gap-6 text-xs md:text-sm leading-relaxed text-gray-300">
-                    <div>
+                <div class="grid md:grid-cols-2 gap-5 md:gap-6 text-xs md:text-sm leading-relaxed text-gray-300 w-full min-w-0">
+                    <div class="min-w-0 w-full">
                         <p class="mb-3"><strong class="text-blue-400">🚨 현상 (Context):</strong><br>${item.context}</p>
                         <p class="mb-3"><strong class="text-blue-400">🔍 원인 분석 (Analysis):</strong><br>${item.analysis}</p>
                         <p><strong class="text-blue-400">💡 해결 조치 (Action):</strong><br>${item.action}</p>
                     </div>
-                    <div>
+                    <div class="min-w-0 w-full overflow-hidden flex flex-col">
                         <p class="mb-3"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
                         <strong class="text-gray-400 block mb-2">💻 수정된 쿼리/코드:</strong>
-                        <pre class="rounded-lg p-3 md:p-4 bg-gray-950 border border-gray-800 overflow-x-auto text-[10px] md:text-xs"><code class="language-sql">${item.code}</code></pre>
+                        <pre class="w-full max-w-full block rounded-lg p-3 md:p-4 bg-gray-950 border border-gray-800 overflow-x-auto text-[10px] md:text-xs font-mono"><code class="language-sql">${item.code}</code></pre>
                     </div>
                 </div>
             </div>
