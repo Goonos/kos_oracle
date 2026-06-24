@@ -49,13 +49,13 @@ const DATA = {
             title: "Oracle High Availability 복제(Replication) 구축 및 Failover 테스트",
             summary: "Data Guard 기반의 Async 복제 구조를 설계하고, Primary DB 장애 발생 시 Standby DB가 무중단으로 역할을 이행하는지 검증한 보고서입니다.",
             tags: ["Oracle", "Data Guard", "Replication", "HA"],
-            docLink: "https://github.com/Determination-github" // 상세 노션이나 깃허브 위키 링크용
+            docLink: "https://blog.naver.com/10soong" // 상세 노션이나 깃허브 위키 링크용
         },
         {
             title: "RMAN을 이용한 Backup & Recovery 시나리오 검증 백서",
             summary: "물리적 디스크 손상 상태를 가상으로 시뮬레이션(Datafile 유실)한 후, RMAN 백업본과 Redo Log를 이용해 무손실 완전 복구(Complete Recovery) 프로세스 정립.",
             tags: ["Oracle", "RMAN", "Backup", "Recovery"],
-            docLink: "#"
+            docLink: "https://blog.naver.com/10soong"
         }
     ],
 
