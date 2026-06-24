@@ -147,14 +147,14 @@ const DATA = {
         },
     ]
     album: [
-        { id: "img-01", src: "images/photo1.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
-        { id: "img-02", src: "images/photo2.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
-        { id: "img-03", src: "images/photo3.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
-        { id: "img-04", src: "images/photo4.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
-        { id: "img-05", src: "images/photo5.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
-        { id: "img-06", src: "images/photo6.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
-        { id: "img-07", src: "images/photo7.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
-        { id: "img-08", src: "images/photo8.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
-        { id: "img-09", src: "images/photo9.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." }
+        { id: "img-01", src: "image/1.jpg", title: "여름공연", comment: "25년 8월 홍대에서 일렉기타 포지션으로 공연" },
+        { id: "img-02", src: "image/2.jpg", title: "겨울공연", comment: "26년 2월 홍대에서 일렉기타 포지션으로 공연" },
+        { id: "img-03", src: "image/3.jpg", title: "밴드사진", comment: "26년 2월 공연 단체사진" },
+        { id: "img-04", src: "image/4.jpg", title: "몽골여행", comment: "몽골여행에서 낙타와 함께" },
+        { id: "img-05", src: "image/5.jpg", title: "전시회", comment: "강릉 아르떼 뮤지엄" },
+        { id: "img-06", src: "image/6.jpg", title: "학생회", comment: "과기대 학생회 주최 체육대회를 마친 후" },
+        { id: "img-07", src: "image/7.jpg", title: "스터디", comment: "DBA가 되기위한 SQL 스터디" },
+        { id: "img-08", src: "image/8.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." },
+        { id: "img-09", src: "image/9.jpg", title: "text", comment: "여기에 코멘트를 적어주세요." }
     ]
 };
