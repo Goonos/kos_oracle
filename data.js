@@ -37,12 +37,82 @@ const DATA = {
             tags: ["Python"],
             link: "https://blog.naver.com/10soong/224324868806"
         },
-        {
-            date: "2026-06-22",
-            title: "데이터베이스 샤딩(Sharding) 도입 시 고려해야 할 트레이드오프",
-            summary: "수평 분산 저장이 가져다주는 확장성과 데이터 정합성 유지 비용 사이의 딜레마 분석.",
-            tags: ["Architecture", "Sharding"],
-            link: "https://tistory.com/your-post"
-        }
+       {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
+           {
+            date: "yyyy-mm-dd",
+            title: "text",
+            summary: "text",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong"
+        },
     ]
 };
