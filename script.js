@@ -39,21 +39,18 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span class="leading-snug break-all">${item.title}</span>
                             </h3>
                             
-                            <div class="flex flex-col gap-5 md:gap-6 text-xs md:text-sm leading-relaxed text-gray-300 w-full min-w-0">
-    <!-- 현상 및 결과 (상단 배치) -->
-    <div class="min-w-0 w-full">
-        <p class="mb-3"><strong class="text-blue-400">🚨 현상 (Context):</strong><br>${item.context}</p>
-        <p class="mb-3"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
-    </div>
+<div class="flex flex-col gap-4 md:gap-5 text-xs md:text-sm leading-relaxed text-gray-300 w-full min-w-0">
+    <!-- 현상 -->
+    <p class="m-0"><strong class="text-blue-400">🚨 현상 (Context):</strong><br>${item.context}</p>
     
-    <!-- 수정된 쿼리/코드 (하단 배치, 가로 전체 너비 사용) -->
-    <div class="min-w-0 w-full flex flex-col">
-        <strong class="text-gray-400 block mb-2">💻 수정된 쿼리/코드:</strong>
+    <!-- 결과 -->
+    <p class="m-0"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
+    
+    <!-- 쿼리 -->
+    <div class="min-w-0 w-full flex flex-col m-0">
+        <strong class="text-purple-400 block mb-2">💻 수정된 쿼리:</strong>
         <div class="relative w-full rounded-lg bg-gray-950 border border-gray-800">
-            <!-- max-h-[160px]로 높이를 늘리고 제한, 넘치는 부분 숨김 -->
             <pre class="w-full max-w-full block p-4 pb-10 overflow-hidden text-[10px] md:text-xs font-mono max-h-[160px]"><code class="language-sql">${item.code}</code></pre>
-            
-            <!-- 아래쪽 내용이 짤린 것처럼 서서히 불투명해지는 페이드아웃 효과 -->
             <div class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-gray-950 to-transparent pointer-events-none rounded-b-lg"></div>
         </div>
     </div>
