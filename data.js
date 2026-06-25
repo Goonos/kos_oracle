@@ -7,7 +7,7 @@ const DATA = {
             title: "특정 집계 쿼리 타임아웃 발생 및 인덱스 재구성을 통한 개선",
             context: "대용량 결제 테이블에서 특정 기간 조회 시 5초 이상 소요되며 가끔 시스템 타임아웃 발생.",
             result: "조회 응답 속도 96% 개선 (5.2초 -> 0.2초), CPU Peak 부하 안정화.",
-            code: "-- 변경 전 인덱스: (STATUS, CREATED_AT)\n-- 변경 후 인덱스: (CREATED_AT, STATUS)\nSELECT /*+ INDEX(p idx_payment_created_status) */ * \nFROM payment p \nWHERE created_at >= '2026-01-01' AND status = 'COMPLETED';",
+            code: SQL_QUERIES.ts01,
             
             // ⭐️ 디테일 버튼을 누르면 노출될 상세 정보들
             details: [
@@ -26,7 +26,7 @@ const DATA = {
             title: "text",
             context: "text",
             result: "text",
-            code: "text",
+            code: SQL_QUERIES.ts02
             
             // ⭐️ 디테일 버튼을 누르면 노출될 상세 정보들
             details: [
