@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // ==========================================
-    // 1. 트러블슈팅 섹션 (1x1 면 분할 슬라이더)
+// ==========================================
+    // 1. 트러블슈팅 섹션 (1x1 면 분할 슬라이더 - 확장 시 스크롤 제한 버전)
     // ==========================================
     try {
         const troubleContainer = document.getElementById("trouble-container");
@@ -40,19 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             </h3>
                             
                             <div class="flex flex-col gap-4 md:gap-5 text-xs md:text-sm leading-relaxed text-gray-300 w-full min-w-0">
-                                <!-- 현상 -->
                                 <p class="m-0"><strong class="text-blue-400">🚨 현상 (Context):</strong><br>${item.context}</p>
                                 
-                                <!-- 결과 -->
                                 <p class="m-0"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
                                 
-                                <!-- ⭐️ 쿼리 (자세히 보기 클릭 시 확장되도록 구조 변경) -->
                                 <div class="min-w-0 w-full flex flex-col m-0">
-                                    <strong class="text-purple-400 block mb-2">💻 수정된 쿼리 (Queries):</strong>
-                                    <!-- 초기 높이를 160px로 제한해두고, JS로 제어 -->
+                                    <strong class="text-purple-400 block mb-2">💻 수정된 쿼리:</strong>
                                     <div id="code-wrapper-${item.id}" class="relative w-full rounded-lg bg-gray-950 border border-gray-800 overflow-hidden transition-all duration-500 ease-in-out" style="max-height: 160px;">
                                         <pre class="w-full max-w-full block p-4 pb-12 text-[10px] md:text-xs font-mono"><code class="language-sql">${item.code}</code></pre>
-                                        <!-- 페이드아웃 효과 (자세히 보기를 누르면 사라짐) -->
                                         <div id="code-fade-${item.id}" class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-gray-950 to-transparent pointer-events-none transition-opacity duration-500"></div>
                                     </div>
                                 </div>
@@ -81,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     const targetEl = document.getElementById(targetId);
                     if (!targetEl) return;
                     
-                    // ⭐️ 코드 박스 닫기 처리
                     const codeId = targetId.replace("details-", "");
                     const codeWrapper = document.getElementById(`code-wrapper-${codeId}`);
                     const codeFade = document.getElementById(`code-fade-${codeId}`);
@@ -92,8 +86,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (targetEl.style.maxHeight !== "" && targetEl.style.maxHeight !== "0px") {
                         targetEl.style.maxHeight = "0px";
                         
-                        // 코드 박스 원상복구
-                        if (codeWrapper) codeWrapper.style.maxHeight = "160px";
+                        // 접힐 때 코드 박스 스크롤 해제 및 최상단 리셋 후 원상복구
+                        if (codeWrapper) {
+                            codeWrapper.style.maxHeight = "160px";
+                            codeWrapper.classList.remove("overflow-y-auto");
+                            codeWrapper.classList.add("overflow-hidden");
+                            codeWrapper.scrollTop = 0; 
+                        }
                         if (codeFade) codeFade.style.opacity = "1";
 
                         if (icon) icon.style.transform = "rotate(0deg)";
@@ -148,7 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     const targetEl = document.getElementById(targetId);
                     if (!targetEl) return;
                     
-                    // ⭐️ 코드 박스 동기화 제어 로직
                     const codeId = targetId.replace("details-", "");
                     const codeWrapper = document.getElementById(`code-wrapper-${codeId}`);
                     const codeFade = document.getElementById(`code-fade-${codeId}`);
@@ -157,18 +155,35 @@ document.addEventListener("DOMContentLoaded", () => {
                     const btnText = currentBtn.querySelector("span");
 
                     if (targetEl.style.maxHeight === "" || targetEl.style.maxHeight === "0px") {
-                        // 열릴 때: 코드 박스도 같이 확장하고 흐림 효과 투명하게 처리
                         targetEl.style.maxHeight = targetEl.scrollHeight + "px";
-                        if (codeWrapper) codeWrapper.style.maxHeight = codeWrapper.scrollHeight + "px";
+                        
+                        if (codeWrapper) {
+                            const maxExpandedHeight = 350; // 👈 코드 박스가 최대로 늘어날 높이 지정
+                            
+                            if (codeWrapper.scrollHeight > maxExpandedHeight) {
+                                // 쿼리가 설정치보다 길면 최대 높이 고정 및 세로 스크롤 활성화 ⭐️
+                                codeWrapper.style.maxHeight = maxExpandedHeight + "px";
+                                codeWrapper.classList.remove("overflow-hidden");
+                                codeWrapper.classList.add("overflow-y-auto");
+                            } else {
+                                // 쿼리가 짧으면 굳이 고정하지 않고 자동 맞춤 확장
+                                codeWrapper.style.maxHeight = codeWrapper.scrollHeight + "px";
+                            }
+                        }
                         if (codeFade) codeFade.style.opacity = "0";
 
                         if (icon) icon.style.transform = "rotate(180deg)";
                         if (btnText) btnText.innerText = "접기";
                         currentBtn.classList.add("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
                     } else {
-                        // 닫힐 때: 코드 박스 다시 축소하고 흐림 효과 원복
                         targetEl.style.maxHeight = "0px";
-                        if (codeWrapper) codeWrapper.style.maxHeight = "160px";
+                        
+                        if (codeWrapper) {
+                            codeWrapper.style.maxHeight = "160px";
+                            codeWrapper.classList.remove("overflow-y-auto");
+                            codeWrapper.classList.add("overflow-hidden");
+                            codeWrapper.scrollTop = 0; // 스크롤 위치 초기화
+                        }
                         if (codeFade) codeFade.style.opacity = "1";
 
                         if (icon) icon.style.transform = "rotate(0deg)";
