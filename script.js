@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 
                                 <!-- ⭐️ 쿼리 (자세히 보기 클릭 시 확장되도록 구조 변경) -->
                                 <div class="min-w-0 w-full flex flex-col m-0">
-                                    <strong class="text-purple-400 block mb-2">💻 수정된 쿼리:</strong>
+                                    <strong class="text-purple-400 block mb-2">💻 수정된 쿼리 (Queries):</strong>
                                     <!-- 초기 높이를 160px로 제한해두고, JS로 제어 -->
                                     <div id="code-wrapper-${item.id}" class="relative w-full rounded-lg bg-gray-950 border border-gray-800 overflow-hidden transition-all duration-500 ease-in-out" style="max-height: 160px;">
                                         <pre class="w-full max-w-full block p-4 pb-12 text-[10px] md:text-xs font-mono"><code class="language-sql">${item.code}</code></pre>
