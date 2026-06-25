@@ -26,7 +26,7 @@ const DATA = {
             title: "text",
             context: "text",
             result: "text",
-            code: SQL_QUERIES.ts02
+            code: SQL_QUERIES.ts02,
             
             // ⭐️ 디테일 버튼을 누르면 노출될 상세 정보들
             details: [
