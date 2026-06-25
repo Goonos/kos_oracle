@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
-    // 1. 트러블슈팅 섹션 (500px 확장 및 커스텀 다크 스크롤바 적용)
+    // 1. 트러블슈팅 섹션 (3D 원형 휠 커버플로우 슬라이더 고도화)
     // ==========================================
     try {
         const troubleContainer = document.getElementById("trouble-container");
@@ -13,7 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const tTotalPages = Math.ceil(tTotalItems / tItemsPerPage);
             let tCurrentPage = 0;
 
-            troubleContainer.innerHTML = ""; // 초기화
+            // 3D 공간 연출을 위한 컨테이너 속성 주입
+            troubleContainer.innerHTML = ""; 
+            troubleContainer.style.perspective = "1200px";
+            troubleContainer.style.transformStyle = "preserve-3d";
+            troubleContainer.className = "relative w-full transition-all duration-500 ease-in-out";
 
             for (let i = 0; i < tTotalPages; i++) {
                 const item = DATA.troubleshooting[i];
@@ -31,9 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
 
+                // inset-x-0 mx-auto 구조로 정중앙 3D 레이어 스택 구성
                 let phtml = `
-                    <div class="w-full shrink-0 px-1 box-border">
-                        <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-5 md:p-6 hover:border-gray-700 transition w-full min-w-0 overflow-hidden flex flex-col">
+                    <div id="trouble-card-${i}" class="trouble-card absolute inset-x-0 mx-auto w-[92%] md:w-[76%] transition-all duration-500 ease-in-out origin-center select-none" style="opacity: 0; pointer-events: none; backface-visibility: hidden;">
+                        <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-5 md:p-6 hover:border-gray-700 transition w-full min-w-0 overflow-hidden flex flex-col shadow-2xl">
                             <h3 class="text-lg md:text-xl font-bold text-white mb-4 flex flex-col md:flex-row md:items-center gap-2 items-start w-full min-w-0">
                                 <span class="text-[10px] md:text-xs bg-red-500/10 text-red-400 px-2.5 py-1 rounded-full font-mono font-normal whitespace-nowrap shrink-0">Issue</span> 
                                 <span class="leading-snug break-all">${item.title}</span>
@@ -41,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             
                             <div class="flex flex-col gap-4 md:gap-5 text-xs md:text-sm leading-relaxed text-gray-300 w-full min-w-0">
                                 <p class="m-0"><strong class="text-blue-400">🚨 현상 (Context):</strong><br>${item.context}</p>
-                                
                                 <p class="m-0"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
                                 
                                 <div class="min-w-0 w-full flex flex-col m-0">
@@ -101,11 +105,53 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
+            // ⭐️ 3D 서핑 공간 알고리즘 코어
             function updateTroubleSlider() {
                 closeAllDetails(); 
 
-                const offset = tCurrentPage * 100;
-                if (troubleContainer) troubleContainer.style.transform = `translateX(-${offset}%)`;
+                const cards = troubleContainer.querySelectorAll(".trouble-card");
+                cards.forEach((card, idx) => {
+                    const distance = idx - tCurrentPage;
+                    
+                    if (distance === 0) {
+                        // 현재 페이지: 가운데 정면 돌출
+                        card.style.transform = "translate3d(0, 0, 0) rotateY(0deg) scale(1)";
+                        card.style.opacity = "1";
+                        card.style.zIndex = "10";
+                        card.style.filter = "none";
+                        card.style.pointerEvents = "auto";
+                    } else if (distance === -1) {
+                        // 이전 페이지: 왼쪽 후방 배치 및 비스듬히 회전
+                        card.style.transform = "translate3d(-24%, 0, -180px) rotateY(28deg) scale(0.85)";
+                        card.style.opacity = "0.35";
+                        card.style.zIndex = "5";
+                        card.style.filter = "blur(1.5px)";
+                        card.style.pointerEvents = "none";
+                    } else if (distance === 1) {
+                        // 다음 페이지: 오른쪽 후방 배치 및 비스듬히 회전
+                        card.style.transform = "translate3d(24%, 0, -180px) rotateY(-28deg) scale(0.85)";
+                        card.style.opacity = "0.35";
+                        card.style.zIndex = "5";
+                        card.style.filter = "blur(1.5px)";
+                        card.style.pointerEvents = "none";
+                    } else {
+                        // 그 외 원거리 페이지: 완전 투명화 및 대기
+                        const side = distance > 0 ? 1 : -1;
+                        card.style.transform = `translate3d(${side * 45}%, 0, -350px) rotateY(${-side * 45}deg) scale(0.7)`;
+                        card.style.opacity = "0";
+                        card.style.zIndex = "1";
+                        card.style.filter = "blur(4px)";
+                        card.style.pointerEvents = "none";
+                    }
+                });
+
+                // 카드가 absolute 상태이므로 컨테이너 높이를 활성화된 카드 높이와 실시간 동기화
+                setTimeout(() => {
+                    const activeCard = troubleContainer.children[tCurrentPage];
+                    if (activeCard) {
+                        troubleContainer.style.height = activeCard.offsetHeight + "px";
+                    }
+                }, 60);
                 
                 const indicatorText = `Page ${tCurrentPage + 1} / ${tTotalPages}`;
                 if (troubleIndicator) troubleIndicator.innerText = indicatorText;
@@ -157,8 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         targetEl.style.maxHeight = targetEl.scrollHeight + "px";
                         
                         if (codeWrapper) {
-                            const maxExpandedHeight = 500; // ⭐️ 코드 박스 최대 높이 500px로 확장
-                            
+                            const maxExpandedHeight = 500; 
                             if (codeWrapper.scrollHeight > maxExpandedHeight) {
                                 codeWrapper.style.maxHeight = maxExpandedHeight + "px";
                                 codeWrapper.classList.remove("overflow-hidden");
@@ -172,6 +217,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (icon) icon.style.transform = "rotate(180deg)";
                         if (btnText) btnText.innerText = "접기";
                         currentBtn.classList.add("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+                        
+                        // 내용 확장 시 바깥 3D 컨테이너 높이 리사이징 동기화
+                        setTimeout(() => {
+                            const activeCard = troubleContainer.children[tCurrentPage];
+                            if (activeCard) troubleContainer.style.height = activeCard.offsetHeight + "px";
+                        }, 510);
                     } else {
                         targetEl.style.maxHeight = "0px";
                         
@@ -186,6 +237,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (icon) icon.style.transform = "rotate(0deg)";
                         if (btnText) btnText.innerText = "자세히 보기";
                         currentBtn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+                        
+                        // 내용 축소 시 바깥 3D 컨테이너 높이 리사이징 동기화
+                        setTimeout(() => {
+                            const activeCard = troubleContainer.children[tCurrentPage];
+                            if (activeCard) troubleContainer.style.height = activeCard.offsetHeight + "px";
+                        }, 510);
                     }
                 });
             });
