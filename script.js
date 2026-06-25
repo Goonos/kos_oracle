@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
-    // 1. 트러블슈팅 섹션 (3D 원형 휠 커버플로우 슬라이더 고도화)
+    // 1. 트러블슈팅 섹션 (3D 휠 불투명 가독성 개선 버전)
     // ==========================================
     try {
         const troubleContainer = document.getElementById("trouble-container");
@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const tTotalPages = Math.ceil(tTotalItems / tItemsPerPage);
             let tCurrentPage = 0;
 
-            // 3D 공간 연출을 위한 컨테이너 속성 주입
             troubleContainer.innerHTML = ""; 
             troubleContainer.style.perspective = "1200px";
             troubleContainer.style.transformStyle = "preserve-3d";
@@ -35,10 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
 
-                // inset-x-0 mx-auto 구조로 정중앙 3D 레이어 스택 구성
                 let phtml = `
                     <div id="trouble-card-${i}" class="trouble-card absolute inset-x-0 mx-auto w-[92%] md:w-[76%] transition-all duration-500 ease-in-out origin-center select-none" style="opacity: 0; pointer-events: none; backface-visibility: hidden;">
-                        <div class="bg-gray-800/50 border border-gray-800 rounded-xl p-5 md:p-6 hover:border-gray-700 transition w-full min-w-0 overflow-hidden flex flex-col shadow-2xl">
+                        <div class="bg-gray-800 border border-gray-700 rounded-xl p-5 md:p-6 w-full min-w-0 overflow-hidden flex flex-col shadow-2xl">
                             <h3 class="text-lg md:text-xl font-bold text-white mb-4 flex flex-col md:flex-row md:items-center gap-2 items-start w-full min-w-0">
                                 <span class="text-[10px] md:text-xs bg-red-500/10 text-red-400 px-2.5 py-1 rounded-full font-mono font-normal whitespace-nowrap shrink-0">Issue</span> 
                                 <span class="leading-snug break-all">${item.title}</span>
@@ -105,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // ⭐️ 3D 서핑 공간 알고리즘 코어
             function updateTroubleSlider() {
                 closeAllDetails(); 
 
@@ -114,28 +111,24 @@ document.addEventListener("DOMContentLoaded", () => {
                     const distance = idx - tCurrentPage;
                     
                     if (distance === 0) {
-                        // 현재 페이지: 가운데 정면 돌출
                         card.style.transform = "translate3d(0, 0, 0) rotateY(0deg) scale(1)";
                         card.style.opacity = "1";
                         card.style.zIndex = "10";
                         card.style.filter = "none";
                         card.style.pointerEvents = "auto";
                     } else if (distance === -1) {
-                        // 이전 페이지: 왼쪽 후방 배치 및 비스듬히 회전
                         card.style.transform = "translate3d(-24%, 0, -180px) rotateY(28deg) scale(0.85)";
                         card.style.opacity = "0.35";
                         card.style.zIndex = "5";
                         card.style.filter = "blur(1.5px)";
                         card.style.pointerEvents = "none";
                     } else if (distance === 1) {
-                        // 다음 페이지: 오른쪽 후방 배치 및 비스듬히 회전
                         card.style.transform = "translate3d(24%, 0, -180px) rotateY(-28deg) scale(0.85)";
                         card.style.opacity = "0.35";
                         card.style.zIndex = "5";
                         card.style.filter = "blur(1.5px)";
                         card.style.pointerEvents = "none";
                     } else {
-                        // 그 외 원거리 페이지: 완전 투명화 및 대기
                         const side = distance > 0 ? 1 : -1;
                         card.style.transform = `translate3d(${side * 45}%, 0, -350px) rotateY(${-side * 45}deg) scale(0.7)`;
                         card.style.opacity = "0";
@@ -145,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 });
 
-                // 카드가 absolute 상태이므로 컨테이너 높이를 활성화된 카드 높이와 실시간 동기화
                 setTimeout(() => {
                     const activeCard = troubleContainer.children[tCurrentPage];
                     if (activeCard) {
@@ -218,7 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (btnText) btnText.innerText = "접기";
                         currentBtn.classList.add("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
                         
-                        // 내용 확장 시 바깥 3D 컨테이너 높이 리사이징 동기화
                         setTimeout(() => {
                             const activeCard = troubleContainer.children[tCurrentPage];
                             if (activeCard) troubleContainer.style.height = activeCard.offsetHeight + "px";
@@ -238,7 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (btnText) btnText.innerText = "자세히 보기";
                         currentBtn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
                         
-                        // 내용 축소 시 바깥 3D 컨테이너 높이 리사이징 동기화
                         setTimeout(() => {
                             const activeCard = troubleContainer.children[tCurrentPage];
                             if (activeCard) troubleContainer.style.height = activeCard.offsetHeight + "px";
