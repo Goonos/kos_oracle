@@ -83,7 +83,116 @@ document.addEventListener("DOMContentLoaded", () => {
                     const icon = btn.querySelector("i");
                     const btnText = btn.querySelector("span");
 
-                    if (
+                    if (targetEl.style.maxHeight !== "" && targetEl.style.maxHeight !== "0px") {
+                        targetEl.style.maxHeight = "0px";
+                        
+                        if (codeWrapper) {
+                            codeWrapper.style.maxHeight = "160px";
+                            codeWrapper.classList.remove("overflow-y-auto");
+                            codeWrapper.classList.add("overflow-hidden");
+                            codeWrapper.scrollTop = 0; 
+                        }
+                        if (codeFade) codeFade.style.opacity = "1";
+
+                        if (icon) icon.style.transform = "rotate(0deg)";
+                        if (btnText) btnText.innerText = "자세히 보기";
+                        btn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+                    }
+                });
+            }
+
+            function updateTroubleSlider() {
+                closeAllDetails(); 
+
+                const offset = tCurrentPage * 100;
+                if (troubleContainer) troubleContainer.style.transform = `translateX(-${offset}%)`;
+                
+                const indicatorText = `Page ${tCurrentPage + 1} / ${tTotalPages}`;
+                if (troubleIndicator) troubleIndicator.innerText = indicatorText;
+                if (troubleIndicatorMobile) troubleIndicatorMobile.innerText = indicatorText;
+            }
+
+            const tPrevButtons = [document.getElementById("trouble-prev"), document.getElementById("trouble-prev-mobile")];
+            const tNextButtons = [document.getElementById("trouble-next"), document.getElementById("trouble-next-mobile")];
+
+            tPrevButtons.forEach(btn => {
+                if (btn) {
+                    btn.addEventListener("click", () => {
+                        if (tCurrentPage > 0) {
+                            tCurrentPage--;
+                            updateTroubleSlider();
+                        }
+                    });
+                }
+            });
+
+            tNextButtons.forEach(btn => {
+                if (btn) {
+                    btn.addEventListener("click", () => {
+                        if (tCurrentPage < tTotalPages - 1) {
+                            tCurrentPage++;
+                            updateTroubleSlider();
+                        }
+                    });
+                }
+            });
+
+            updateTroubleSlider();
+
+            document.querySelectorAll(".toggle-detail-btn").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    const currentBtn = e.currentTarget;
+                    const targetId = currentBtn.getAttribute("data-target");
+                    const targetEl = document.getElementById(targetId);
+                    if (!targetEl) return;
+                    
+                    const codeId = targetId.replace("details-", "");
+                    const codeWrapper = document.getElementById(`code-wrapper-${codeId}`);
+                    const codeFade = document.getElementById(`code-fade-${codeId}`);
+
+                    const icon = currentBtn.querySelector("i");
+                    const btnText = currentBtn.querySelector("span");
+
+                    if (targetEl.style.maxHeight === "" || targetEl.style.maxHeight === "0px") {
+                        targetEl.style.maxHeight = targetEl.scrollHeight + "px";
+                        
+                        if (codeWrapper) {
+                            const maxExpandedHeight = 500; // ⭐️ 코드 박스 최대 높이 500px로 확장
+                            
+                            if (codeWrapper.scrollHeight > maxExpandedHeight) {
+                                codeWrapper.style.maxHeight = maxExpandedHeight + "px";
+                                codeWrapper.classList.remove("overflow-hidden");
+                                codeWrapper.classList.add("overflow-y-auto");
+                            } else {
+                                codeWrapper.style.maxHeight = codeWrapper.scrollHeight + "px";
+                            }
+                        }
+                        if (codeFade) codeFade.style.opacity = "0";
+
+                        if (icon) icon.style.transform = "rotate(180deg)";
+                        if (btnText) btnText.innerText = "접기";
+                        currentBtn.classList.add("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+                    } else {
+                        targetEl.style.maxHeight = "0px";
+                        
+                        if (codeWrapper) {
+                            codeWrapper.style.maxHeight = "160px";
+                            codeWrapper.classList.remove("overflow-y-auto");
+                            codeWrapper.classList.add("overflow-hidden");
+                            codeWrapper.scrollTop = 0; 
+                        }
+                        if (codeFade) codeFade.style.opacity = "1";
+
+                        if (icon) icon.style.transform = "rotate(0deg)";
+                        if (btnText) btnText.innerText = "자세히 보기";
+                        currentBtn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
+                    }
+                });
+            });
+        }
+    } catch (e) {
+        console.error("Troubleshooting Error 예외 처리:", e);
+    }
 
     // ==========================================
     // 2. 아키텍처 백서 섹션
