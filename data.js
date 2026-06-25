@@ -39,6 +39,25 @@ const DATA = {
                     content: "text"
                 }
             ]
+        },
+        {
+            id: "ts-03", // 고유 ID 추가
+            title: "text",
+            context: "text",
+            result: "text",
+            code: SQL_QUERIES.ts03,
+            
+            // ⭐️ 디테일 버튼을 누르면 노출될 상세 정보들
+            details: [
+                {
+                    subtitle: "🔍 text",
+                    content: "text"
+                },
+                {
+                    subtitle: "🛠️ text",
+                    content: "text"
+                }
+            ]
         }
     ],
             
