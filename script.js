@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
-    // 1. 트러블슈팅 섹션 (좌우 무한 순환 3D 휠 슬라이더 고도화)
+    // 1. 트러블슈팅 섹션 (좌우 무한 순환 3D 휠 슬라이더 - 자세히 보기 복구 완료)
     // ==========================================
     try {
         const troubleContainer = document.getElementById("trouble-container");
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div id="details-${item.id}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div class="py-2">
                                     ${detailsHtml}
-                                }
+                                </div>
                             </div>
 
                             <div class="mt-4 pt-4 border-t border-gray-800/40 flex justify-end">
@@ -103,16 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // ⭐️ 양방향 예외 처리형 무한 루프 3D 연산 엔진
             function updateTroubleSlider() {
                 closeAllDetails(); 
 
                 const cards = troubleContainer.querySelectorAll(".trouble-card");
                 cards.forEach((card, idx) => {
-                    // 기본 카드 간 배치 거리 계산
                     let distance = idx - tCurrentPage;
                     
-                    // ⭐️ 핵심 연산: 총 페이지 수 기준, 최단 거리 순환 좌표 재매핑
                     if (tTotalPages > 2) {
                         if (distance > tTotalPages / 2) {
                             distance -= tTotalPages;
@@ -120,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             distance += tTotalPages;
                         }
                     } else if (tTotalPages === 2) {
-                        // 페이지가 딱 2개인 특수 상황 방어선 예외 처리
                         if (tCurrentPage === 0 && idx === 1) distance = 1;
                         if (tCurrentPage === 1 && idx === 0) distance = -1;
                     }
@@ -132,21 +128,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         card.style.filter = "none";
                         card.style.pointerEvents = "auto";
                     } else if (distance === -1) {
-                        // 이전 카드 (1페이지일 때 마지막 카드가 이 자리에 안착함)
                         card.style.transform = "translate3d(-24%, 0, -180px) rotateY(28deg) scale(0.85)";
                         card.style.opacity = "0.35";
                         card.style.zIndex = "5";
                         card.style.filter = "blur(1.5px)";
                         card.style.pointerEvents = "none";
                     } else if (distance === 1) {
-                        // 다음 카드 (마지막 페이지일 때 1번째 카드가 이 자리에 안착함)
                         card.style.transform = "translate3d(24%, 0, -180px) rotateY(-28deg) scale(0.85)";
                         card.style.opacity = "0.35";
                         card.style.zIndex = "5";
                         card.style.filter = "blur(1.5px)";
                         card.style.pointerEvents = "none";
                     } else {
-                        // 무한 루프 궤도 바깥 영역의 대기조 카드들
                         const side = distance > 0 ? 1 : -1;
                         card.style.transform = `translate3d(${side * 45}%, 0, -350px) rotateY(${-side * 45}deg) scale(0.7)`;
                         card.style.opacity = "0";
@@ -171,11 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const tPrevButtons = [document.getElementById("trouble-prev"), document.getElementById("trouble-prev-mobile")];
             const tNextButtons = [document.getElementById("trouble-next"), document.getElementById("trouble-next-mobile")];
 
-            // 무한 순환 구조에 맞는 버튼 핸들러 연산 업데이트 ⭐️
             tPrevButtons.forEach(btn => {
                 if (btn) {
                     btn.addEventListener("click", () => {
-                        // 1페이지에서 이전을 누르면 마지막 페이지로 회전
                         tCurrentPage = (tCurrentPage - 1 + tTotalPages) % tTotalPages;
                         updateTroubleSlider();
                     });
@@ -185,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
             tNextButtons.forEach(btn => {
                 if (btn) {
                     btn.addEventListener("click", () => {
-                        // 마지막 페이지에서 다음을 누르면 1페이지로 회전
                         tCurrentPage = (tCurrentPage + 1) % tTotalPages;
                         updateTroubleSlider();
                     });
