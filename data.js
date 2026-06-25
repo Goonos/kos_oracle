@@ -79,10 +79,17 @@ const DATA = {
     ],
 
     // 3. 외부 블로그 링크 데이터 (요청하신 기능 ⭐️)
-   blogLogs: [       
+   blogLogs: [   
+       {
+            date: "2026-06-25",
+            title: "3회차 - 파이썬 제어문",
+            summary: "기초 자료구조에 대한 이해와 if-elif 제어문을 통한 논리적 흐름 설계를 바탕으로, 업무 자동화 스크립트의 뼈대가 되는 데이터 입출력 제어, 형변환, 연산자 메커니즘 및 심화 문자열 처리 기술을 체계적으로 정리했습니다.",
+            tags: ["Python"],
+            link: "https://blog.naver.com/10soong/224327194820"
+        },     
        {
             date: "2026-06-24",
-            title: "2회차 - 파이썬 기초",
+            title: "2회차 - 파이썬 집합자료형",
             summary: "파이썬의 기초 서식과 문자열, 리스트, 튜플에 대한 이해를 바탕으로, 프로그래밍 프로토타이핑과 업무 자동화 스크립트의 뼈대가 되는 데이터 입출력 제어, 형변환(Type Casting), 연산자 메커니즘 및 심화 문자열 처리 기술을 체계적으로 정리했습니다.",
             tags: ["Python"],
             link: "https://blog.naver.com/10soong/224326086514"
@@ -93,13 +100,6 @@ const DATA = {
             summary: "프로그래밍 프로토타이핑과 자동화 스크립트의 기본이 되는 데이터 입출력 제어, 형변환(Type Casting), 연산자 메커니즘 및 문자열 처리 기초를 정리했습니다.",
             tags: ["Python"],
             link: "https://blog.naver.com/10soong/224324868806"
-        },
-           {
-            date: "yyyy-mm-dd",
-            title: "text",
-            summary: "text",
-            tags: ["Python"],
-            link: "https://blog.naver.com/10soong"
         },
            {
             date: "yyyy-mm-dd",
