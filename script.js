@@ -39,22 +39,24 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span class="leading-snug break-all">${item.title}</span>
                             </h3>
                             
-<div class="flex flex-col gap-4 md:gap-5 text-xs md:text-sm leading-relaxed text-gray-300 w-full min-w-0">
-    <!-- 현상 -->
-    <p class="m-0"><strong class="text-blue-400">🚨 현상 (Context):</strong><br>${item.context}</p>
-    
-    <!-- 결과 -->
-    <p class="m-0"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
-    
-    <!-- 쿼리 -->
-    <div class="min-w-0 w-full flex flex-col m-0">
-        <strong class="text-purple-400 block mb-2">💻 수정된 쿼리:</strong>
-        <div class="relative w-full rounded-lg bg-gray-950 border border-gray-800">
-            <pre class="w-full max-w-full block p-4 pb-10 overflow-hidden text-[10px] md:text-xs font-mono max-h-[160px]"><code class="language-sql">${item.code}</code></pre>
-            <div class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-gray-950 to-transparent pointer-events-none rounded-b-lg"></div>
-        </div>
-    </div>
-</div>
+                            <div class="flex flex-col gap-4 md:gap-5 text-xs md:text-sm leading-relaxed text-gray-300 w-full min-w-0">
+                                <!-- 현상 -->
+                                <p class="m-0"><strong class="text-blue-400">🚨 현상 (Context):</strong><br>${item.context}</p>
+                                
+                                <!-- 결과 -->
+                                <p class="m-0"><strong class="text-emerald-400">📈 결과 (Result):</strong><br>${item.result}</p>
+                                
+                                <!-- ⭐️ 쿼리 (자세히 보기 클릭 시 확장되도록 구조 변경) -->
+                                <div class="min-w-0 w-full flex flex-col m-0">
+                                    <strong class="text-purple-400 block mb-2">💻 수정된 쿼리:</strong>
+                                    <!-- 초기 높이를 160px로 제한해두고, JS로 제어 -->
+                                    <div id="code-wrapper-${item.id}" class="relative w-full rounded-lg bg-gray-950 border border-gray-800 overflow-hidden transition-all duration-500 ease-in-out" style="max-height: 160px;">
+                                        <pre class="w-full max-w-full block p-4 pb-12 text-[10px] md:text-xs font-mono"><code class="language-sql">${item.code}</code></pre>
+                                        <!-- 페이드아웃 효과 (자세히 보기를 누르면 사라짐) -->
+                                        <div id="code-fade-${item.id}" class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-gray-950 to-transparent pointer-events-none transition-opacity duration-500"></div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div id="details-${item.id}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
                                 <div class="py-2">
@@ -79,11 +81,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     const targetEl = document.getElementById(targetId);
                     if (!targetEl) return;
                     
+                    // ⭐️ 코드 박스 닫기 처리
+                    const codeId = targetId.replace("details-", "");
+                    const codeWrapper = document.getElementById(`code-wrapper-${codeId}`);
+                    const codeFade = document.getElementById(`code-fade-${codeId}`);
+
                     const icon = btn.querySelector("i");
                     const btnText = btn.querySelector("span");
 
                     if (targetEl.style.maxHeight !== "" && targetEl.style.maxHeight !== "0px") {
                         targetEl.style.maxHeight = "0px";
+                        
+                        // 코드 박스 원상복구
+                        if (codeWrapper) codeWrapper.style.maxHeight = "160px";
+                        if (codeFade) codeFade.style.opacity = "1";
+
                         if (icon) icon.style.transform = "rotate(0deg)";
                         if (btnText) btnText.innerText = "자세히 보기";
                         btn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
@@ -135,16 +147,30 @@ document.addEventListener("DOMContentLoaded", () => {
                     const targetId = currentBtn.getAttribute("data-target");
                     const targetEl = document.getElementById(targetId);
                     if (!targetEl) return;
+                    
+                    // ⭐️ 코드 박스 동기화 제어 로직
+                    const codeId = targetId.replace("details-", "");
+                    const codeWrapper = document.getElementById(`code-wrapper-${codeId}`);
+                    const codeFade = document.getElementById(`code-fade-${codeId}`);
+
                     const icon = currentBtn.querySelector("i");
                     const btnText = currentBtn.querySelector("span");
 
                     if (targetEl.style.maxHeight === "" || targetEl.style.maxHeight === "0px") {
+                        // 열릴 때: 코드 박스도 같이 확장하고 흐림 효과 투명하게 처리
                         targetEl.style.maxHeight = targetEl.scrollHeight + "px";
+                        if (codeWrapper) codeWrapper.style.maxHeight = codeWrapper.scrollHeight + "px";
+                        if (codeFade) codeFade.style.opacity = "0";
+
                         if (icon) icon.style.transform = "rotate(180deg)";
                         if (btnText) btnText.innerText = "접기";
                         currentBtn.classList.add("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
                     } else {
+                        // 닫힐 때: 코드 박스 다시 축소하고 흐림 효과 원복
                         targetEl.style.maxHeight = "0px";
+                        if (codeWrapper) codeWrapper.style.maxHeight = "160px";
+                        if (codeFade) codeFade.style.opacity = "1";
+
                         if (icon) icon.style.transform = "rotate(0deg)";
                         if (btnText) btnText.innerText = "자세히 보기";
                         currentBtn.classList.remove("bg-blue-500/10", "text-blue-400", "border-blue-500/30");
